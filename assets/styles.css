@@ -1,0 +1,51 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #F5E6CA; /* màu kem sữa */
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #547A7A; /* xanh cổ điển */
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  background-color: #8B5E3C; /* nâu đất */
+  margin: 0;
+  display: flex;
+  justify-content: center;
+}
+
+nav li {
+  margin: 0 20px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  display: block;
+  padding: 10px;
+}
+
+nav a:hover {
+  background-color: #A67B5B; /* nâu vintage khi hover */
+}
+
+main {
+  text-align: center;
+  padding: 40px;
+}
+
+footer {
+  background-color: #B3A395; /* xám khói */
+  color: white;
+  text-align: center;
+  padding: 10px;
+}
