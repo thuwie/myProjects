@@ -1,6 +1,9 @@
 <?php
 session_start();
 require_once '../database/db.php'; // kết nối DB
+$_SESSION['user_id'] = $user['id'];
+$_SESSION['username'] = $user['username'];
+$_SESSION['role'] = $user['role']; // thêm dòng này
 
 // Lấy dữ liệu từ form
 $username = $_POST['username'] ?? '';

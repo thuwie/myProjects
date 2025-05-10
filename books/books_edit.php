@@ -1,5 +1,6 @@
 <?php
-require_once('../db.php');
+require_once '../middleware/auth.php';
+require_once '../database/db.php';
 
 $book = null;
 $error_message = '';
@@ -7,28 +8,28 @@ $success_message = '';
 
 // Xử lý request của GET
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-        $book_id = intval($_GET['id']);
+    if (isset($_GET['stt']) && is_numeric($_GET['stt'])) {
+        $book_id = intval($_GET['stt']);
         
         try {
-            $stmt = $pdo->prepare("SELECT * FROM books WHERE id = ?");
+            $stmt = $pdo->prepare("SELECT * FROM books WHERE stt = ?");
             $stmt->execute([$book_id]);
             $book = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if (!$book) {
-                $error_message = "Không tìm thấy sách với ID này.";
+                $error_message = "Không tìm thấy sách với STT này.";
             }
         } catch (PDOException $e) {
             $error_message = "Lỗi truy vấn dữ liệu: " . $e->getMessage();
         }
     } else {
-        $error_message = "ID sách không hợp lệ.";
+        $error_message = "Sách không hợp lệ.";
     }
 }
 
 // Xử lý request của POST
 elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $book_id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+    $book_id = filter_input(INPUT_POST, 'stt', FILTER_VALIDATE_INT);
     $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
     $author = filter_input(INPUT_POST, 'author', FILTER_SANITIZE_STRING);
     $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_STRING);
@@ -39,7 +40,7 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Bước kiểm tra dữ liệu
     $errors = [];
-    if (!$book_id) $errors[] = "ID sách không hợp lệ.";
+    if (!$book_id) $errors[] = "Sách không hợp lệ.";
     if (empty($title)) $errors[] = "Tên sách không được để trống.";
     if (empty($author)) $errors[] = "Tác giả không được để trống.";
     if (empty($category)) $errors[] = "Thể loại không được để trống.";
@@ -53,13 +54,13 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($errors)) {
         try {
             $stmt = $pdo->prepare("UPDATE books SET title = ?, author = ?, category = ?, 
-                                 publish_year = ?, status = ?, summary = ?, images = ? WHERE id = ?");
+                                 publish_year = ?, status = ?, summary = ?, images = ? WHERE stt = ?");
             $result = $stmt->execute([$title, $author, $category, $publish_year, $status, $summary, $images, $book_id]);
             
             if ($result) {
                 $success_message = "Cập nhật thông tin sách thành công!";
                 // Lấy dữ liệu đã cập nhật
-                $stmt = $pdo->prepare("SELECT * FROM books WHERE id = ?");
+                $stmt = $pdo->prepare("SELECT * FROM books WHERE stt = ?");
                 $stmt->execute([$book_id]);
                 $book = $stmt->fetch(PDO::FETCH_ASSOC);
             } else {
@@ -72,7 +73,7 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error_message = implode("<br>", $errors);
         // Điền lại $book với dữ liệu POST
         $book = [
-            'id' => $book_id,
+            'stt' => $book_id,
             'title' => $title,
             'author' => $author,
             'category' => $category,
@@ -100,8 +101,8 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
 
     <?php if ($book): ?>
-        <form action="books_edit.php?id=<?= htmlspecialchars($book['id']) ?>" method="POST" class="form-box">
-            <input type="hidden" name="id" value="<?= htmlspecialchars($book['id']) ?>">
+        <form action="books_edit.php?stt=<?= htmlspecialchars($book['stt']) ?>" method="POST" class="form-box">
+            <input type="hidden" name="stt" value="<?= htmlspecialchars($book['stt']) ?>">
 
             <label for="title">Tên sách:</label>
             <input type="text" id="title" name="title" 
