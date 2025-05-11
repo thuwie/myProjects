@@ -19,19 +19,19 @@
 </head>
 <body>
 
-  <form class="form" action="./middleware/middleware.php" method="POST"  style = "<?php echo $display?>">
+  <form class="form" action="./middleware/middleware.php" method="POST" id ="login-form" style = "<?php echo $display?>">
       <div class="login">
           <div class="img-logo">
-            <img src="./public/logo_login.png" alt="Book logom">
+            <img src="./public/logo_login.png" alt="Book logo">
           </div>
 
           <div class="input-element">
-            <input class="username" type="text" name="username" placeholder ="Nhập tài khoản">
+            <input class="username" type="text" name="username" alias="tài khoản" placeholder ="Nhập tài khoản" rules ="require">
             <span class="password-section">
-              <input class="password" type="password" name="password" placeholder ="Nhập mật khẩu">
-              <i class="fa-solid fa-eye"></i>
+              <input class="password" type="password" name="password" alias = "mật khẩu" placeholder ="Nhập mật khẩu" rules ="require|length-8">
+              <i class="fa-solid fa-eye show-password"></i>
             </span>
-            <span class="validation-message">Vui lòng nhập thông tin!!!</span>
+            <span class="validation-message"></span>
           </div>
           
           <div class="btn-login"> 
@@ -39,13 +39,17 @@
           </div>
           
           <div class="register">
-             <a href="/">Đăng ký tài khoản mới</a>
+             <a href="/">Đăng ký tài khoản</a>
           </div>
       </div>
-</form>
+  </form>
 
   <header>
     <h1>Hệ thống quản lý thư viện</h1>
+     <span class="user-avt">
+        <?php echo  $_SESSION['username']?>
+        <i class="fa-solid fa-user"></i>
+    </span>
   </header>
 
   <nav>
@@ -63,5 +67,9 @@
   <footer>
     <p>&copy; 2025 Thư viện trường XYZ</p>
   </footer>
+  <script src ="./validation/validator.js"> </script>
+  <script> 
+    validation('login-form');
+  </script>
 </body>
 </html>

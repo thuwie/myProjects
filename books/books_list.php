@@ -1,5 +1,5 @@
 <?php
-require_once('../db.php');
+require_once('../database/db.php');
 
 // Tạo biến
 $books = [];
@@ -25,6 +25,7 @@ try {
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
     $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
     
 } catch (PDOException $e) {
     $error_message = "Lỗi truy vấn dữ liệu: " . $e->getMessage();
@@ -58,7 +59,7 @@ try {
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>STT</th>
                     <th>Tên sách</th>
                     <th>Tác giả</th>
                     <th>Thể loại</th>
