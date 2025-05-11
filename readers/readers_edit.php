@@ -1,5 +1,6 @@
 <?php
-require_once('../db.php');
+require_once '../middleware/auth.php';
+require_once '../database/db.php';
 include("../includes/header.php");
 include("../includes/nav.php");
 

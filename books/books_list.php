@@ -1,5 +1,7 @@
 <?php
 require_once('../database/db.php');
+require_once '../middleware/auth.php';
+require_once '../database/db.php';
 
 // Tạo biến
 $books = [];
@@ -10,7 +12,7 @@ $search_field = filter_input(INPUT_GET, 'field', FILTER_SANITIZE_STRING);
 
 try {
     // Build truy vấn SQL
-    $sql = "SELECT id, title, author, category, publish_year, status, summary, images FROM books";
+    $sql = "SELECT stt, title, author, category, publish_year, status, summary, images FROM books";
     $params = [];
     
     // Thêm điều kiện tìm kiếm nếu tham số tìm kiếm tồn tại
@@ -19,7 +21,7 @@ try {
         $params[] = "%$search_term%";
     }
     
-    $sql .= " ORDER BY title";
+    $sql .= " ORDER BY stt";
     
     // CHuẩn bị và thực hiện query
     $stmt = $pdo->prepare($sql);
@@ -42,7 +44,6 @@ try {
         <p style="color: red; font-weight: bold;"><?= $error_message ?></p>
     <?php endif; ?>
 
-    //Mẫu tìm kiếm
     <form action="books_list.php" method="GET" class="search-form">
         <select name="field">
             <option value="title" <?= $search_field === 'title' ? 'selected' : '' ?>>Tên sách</option>
@@ -73,7 +74,7 @@ try {
             <tbody>
                 <?php foreach ($books as $book): ?>
                     <tr>
-                        <td><?= htmlspecialchars($book['id']) ?></td>
+                        <td><?= htmlspecialchars($book['stt']) ?></td>
                         <td><?= htmlspecialchars($book['title']) ?></td>
                         <td><?= htmlspecialchars($book['author']) ?></td>
                         <td><?= htmlspecialchars($book['category']) ?></td>
@@ -88,9 +89,9 @@ try {
                             <?php endif; ?>
                         </td>
                         <td>
-                            <a href="books_edit.php?id=<?= htmlspecialchars($book['id']) ?>" 
+                            <a href="books_edit.php?stt=<?= htmlspecialchars($book['stt']) ?>" 
                                class="btn btn-small">Sửa</a>
-                            <a href="books_delete.php?id=<?= htmlspecialchars($book['id']) ?>"
+                            <a href="books_delete.php?stt=<?= htmlspecialchars($book['stt']) ?>"
                                class="btn btn-small btn-danger"
                                onclick="return confirm('Bạn có chắc chắn muốn xóa sách này?');">Xóa</a>
                         </td>

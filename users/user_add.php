@@ -2,24 +2,33 @@
 require_once '../database/db.php';
 $username = $_POST['username'] ?? '';
 $password = $_POST['password'] ?? '';
-$role = 'user'; 
+$role = $_POST['role'] ?? 'sinhvien';
 
-// Mã hóa mật khẩu
-$hashed_password = password_hash($password, PASSWORD_DEFAULT);
+$sql_check = "SELECT * FROM users WHERE username = ?";
+$stmt_check = $pdo->prepare($sql_check);
+$stmt_check->execute([$username]);
+$user_check = $stmt_check->fetch(PDO::FETCH_ASSOC);
 
-// Câu lệnh SQL để chèn dữ liệu vào bảng 'users'
-$sql = "INSERT INTO users (username, password, role) VALUES (:username, :password, :role)";
+if($user_check){
+     echo "Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.";
+}else{
+    // Mã hóa mật khẩu
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-// Chuẩn bị và thực thi câu lệnh
-$stmt = $pdo->prepare($sql);
-$stmt->bindParam(':username', $username);
-$stmt->bindParam(':password', $hashed_password);
-$stmt->bindParam(':role', $role);
+    // Câu lệnh SQL để chèn dữ liệu vào bảng 'users'
+    $sql = "INSERT INTO users (username, password, role) VALUES (:username, :password, :role)";
 
-if ($stmt->execute()) {
-    header("Location: ../index.php");
-    exit;
-} else {
-    echo "Error adding user.";
+    // Chuẩn bị và thực thi câu lệnh
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':username', $username);
+    $stmt->bindParam(':password', $hashed_password);
+    $stmt->bindParam(':role', $role);
+
+    if ($stmt->execute()) {
+        header("Location: ../index.php?success=1");
+        exit;
+    } else {
+        echo "Lỗi thêm người dùng.";
+    }
 }
 ?>

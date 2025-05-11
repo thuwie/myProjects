@@ -1,17 +1,18 @@
 <?php
-require_once('../db.php');
+require_once '../middleware/auth.php';
+require_once '../database/db.php';
 
 $error_message = '';
 $success_message = '';
 
-if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $book_id = intval($_GET['id']);
+if (isset($_GET['stt']) && is_numeric($_GET['stt'])) {
+    $book_id = intval($_GET['stt']);
     
     try {
         $pdo->beginTransaction();
         
         // Kiểm tra sách có tồn tại và có đang được mượn không
-        $stmt = $pdo->prepare("SELECT status FROM books WHERE id = ?");
+        $stmt = $pdo->prepare("SELECT status FROM books WHERE stt = ?");
         $stmt->execute([$book_id]);
         $book = $stmt->fetch();
         
@@ -37,7 +38,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         $stmt->execute([$book_id]);
         
         // Xóa sách
-        $stmt = $pdo->prepare("DELETE FROM books WHERE id = ?");
+        $stmt = $pdo->prepare("DELETE FROM books WHERE stt = ?");
         $stmt->execute([$book_id]);
         
         $pdo->commit();
@@ -48,7 +49,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         $error_message = $e->getMessage();
     }
 } else {
-    $error_message = "ID sách không hợp lệ.";
+    $error_message = "Sách không hợp lệ.";
 }
 
 // Chuyển hướng
