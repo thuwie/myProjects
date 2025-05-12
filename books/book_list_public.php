@@ -32,7 +32,7 @@ $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <table border="1" cellspacing="0" cellpadding="8" style="margin: auto;">
       <tr>
         <th>STT</th>
-        <th>Hình ảnhảnh</th>
+        <th>Hình ảnh</th>
         <th>Tiêu đề</th>
         <th>Tác giả</th>
         <th>Thể loại</th>
