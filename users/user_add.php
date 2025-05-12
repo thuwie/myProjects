@@ -2,7 +2,7 @@
 require_once '../database/db.php';
 $username = $_POST['username'] ?? '';
 $password = $_POST['password'] ?? '';
-$role = $_POST['role'] ?? 'sinhvien';
+$role = $_POST['role'] ?? 'user';
 
 $sql_check = "SELECT * FROM users WHERE username = ?";
 $stmt_check = $pdo->prepare($sql_check);

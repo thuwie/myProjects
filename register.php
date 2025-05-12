@@ -15,17 +15,15 @@
       </div>
 
       <div class="input-element">
-        <input class="username" type="text" name="username" placeholder="Tên tài khoản" required>
+        <input class="username" type="text" name="username" placeholder="Nhập tài khoản" required>
+
+        <input class="email" type="email" name="email" placeholder="Nhập email" required>
+        <span>Lưu ý: email sẽ được dùng để khôi phục tài khoản</span>
 
         <span class="password-section">
-          <input class="password" type="password" name="password" placeholder="Mật khẩu" required>
+          <input class="password" type="password" name="password" placeholder="Nhập mật khẩu" required>
           <i class="fa-solid fa-eye toggle-password"></i>
         </span>
-
-        <select name="role" style="margin-top: 15px; width: 80%; border-radius: 30px; padding: 5px 10px;">
-          <option value="sinhvien">Sinh viên</option>
-          <option value="admin">Admin</option>
-        </select>
       </div>
 
       <div class="btn-login">

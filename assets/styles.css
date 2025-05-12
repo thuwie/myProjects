@@ -103,29 +103,47 @@ footer {
   margin-bottom: 15px;
 }
 
+.input-element .email {
+   width: 76%;
+  height: 30px;
+  border-radius: 30px;
+  padding: 0 18px;
+  border:  1px solid white;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
+  color: white;
+  margin-bottom: 3px;
+}
+
+.input-element span {
+  color: white;
+  font-size: 12px;
+  padding: 0 18px;
+  font-style: italic;
+}
+
 .input-element input:focus {
   outline: none;
 }
 
 .password-section {
-  width: 86%;
-  height: 30px;
-  border-radius: 30px;
-  border: 1px solid white;
-  display: flex;
-  padding: -1px 10px;
-  position: relative;
+    width: 74%;
+    height: 30px;
+    border-radius: 30px;
+    border: 1px solid white;
+    position: relative;
+    margin-top: 10px;
 }
 
 .password-section input {
-  position: absolute;
-  width: 89%;
-  height: 99%;
-  border-radius: 116px;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
-  border: none;
-  color: white;
-  padding: 0 18px;
+    position: absolute;
+    width: 89%;
+    height: 101%;
+    border-radius: 116px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
+    border: none;
+    color: white;
+    left: 0;
+    padding: 0 18px;
 }
 
 .password-section input:focus {

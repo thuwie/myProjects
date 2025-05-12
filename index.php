@@ -45,7 +45,7 @@
           </div>
           
           <div class="register">
-             <a href="/">Đăng ký tài khoản</a>
+             <a href="./register.php">Đăng ký tài khoản</a>
           </div>
       </div>
   </form>
@@ -60,7 +60,7 @@
 
   <nav>
     <ul>
-      <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'quanly'): ?>
+      <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
       <li><a href="books/books_list.php">Quản lý sách</a></li>
       <li><a href="readers/readers_list.php">Quản lý độc giả</a></li>
       <li><a href="loans/loans_borrow.php">Mượn / Trả sách</a></li>
@@ -72,9 +72,9 @@
   </nav>
 
   <main>
-    <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'quanly'): ?>
+    <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
     <p>Chào mừng <strong>Quản lý</strong> đến với hệ thống thư viện. Vui lòng chọn chức năng bên trên để tiếp tục.</p>
-  <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'sinhvien'): ?>
+  <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user'): ?>
     <h2>Dành cho sinh viên:</h2>
     <ul>
       <li><a href="books/book_list_public.php">Xem danh sách sách hiện có</a></li>

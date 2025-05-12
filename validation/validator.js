@@ -51,20 +51,25 @@ const validation = function(selector) {
         });
    };
 
-    Array.from(inputs).forEach(input => addEvent(input));
-
-    //Kiểm tra người dùng đã nhập đầy đủ thông tin chưa rồi mới được đăng nhập
-    function validBeforeSubmit() {
-        console.log(FORM);
-        
-        BTN_SUBMIT.addEventListener('click', (e)=> {
-            mess && e.preventDefault();
+   //Đăng ký sự kiện cho button Đăng Nhập
+   BTN_SUBMIT.addEventListener('click', (e) => {
+        inputs.forEach(input => {
+             for(let i = 0; i < REQUIREMENT_OF_INPUTS[input.name].length; i++) {
+                    if(!input.value) {
+                         messageElement.innerText = "Vui lòng nhập đầy đủ thông tin !!!";
+                        e.preventDefault();
+                        break;
+                    } else if(mess){
+                        e.preventDefault();
+                        break;
+                    } else {
+                        messageElement.innerText ="" ;
+                    };  
+            };
         });
-        //bug
-    };
+   });
 
-    validBeforeSubmit();
-
+    Array.from(inputs).forEach(input => addEvent(input));
     //Hiển thị Password khi click icon
     function togglePass(formSelector) {
     const showPassword = formSelector.querySelector('.show-password');
