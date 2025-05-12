@@ -58,33 +58,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
 
     <form action="books_add.php" method="POST" class="form-box">
-        <label for="title">Tên sách:</label>
-        <input type="text" id="title" name="title" value="<?= htmlspecialchars($title ?? '') ?>" required>
+        <div class="container-box">
+            <div class="form-group">
+                 <label for="title">Tên sách:</label>
+                <input type="text" id="title" name="title" value="<?= htmlspecialchars($title ?? '') ?>" required>
+            </div>
+           
+            <div class="form-group">
+                 <label for="author">Tác giả:</label>
+                <input type="text" id="author" name="author" value="<?= htmlspecialchars($author ?? '') ?>" required>
+            </div>
+           
+             <div class="form-group">
+                <label for="category">Thể loại:</label>
+                <input type="text" id="category" name="category" value="<?= htmlspecialchars($category ?? '') ?>" required>
+             </div>
+            
+             <div class="form-group">
+                <label for="publish_year">Xuất bản:</label>
+                <input class="publish_year" type="number" id="publish_year" name="publish_year" 
+                    min="1000" max="<?= date('Y') + 1 ?>" 
+                    value="<?= htmlspecialchars($publish_year ?? '') ?>" required>
+             </div>
 
-        <label for="author">Tác giả:</label>
-        <input type="text" id="author" name="author" value="<?= htmlspecialchars($author ?? '') ?>" required>
+            <div class="form-group status">
+                <label>Trạng thái:</label><br>
+                <select name="status">
+                    <option value="available">Còn</option>
+                    <option value="unavailable">Hết</option>
+                </select><br><br>
+            </div>
 
-        <label for="category">Thể loại:</label>
-        <input type="text" id="category" name="category" value="<?= htmlspecialchars($category ?? '') ?>" required>
+            <div class="form-group desctiption">
+                <label>Tóm tắt:</label><br>
+                <textarea name="summary" rows="4" cols="50"></textarea><br><br>
+            </div>
 
-        <label for="publish_year">Năm xuất bản:</label>
-        <input type="number" id="publish_year" name="publish_year" 
-               min="1000" max="<?= date('Y') + 1 ?>" 
-               value="<?= htmlspecialchars($publish_year ?? '') ?>" required>
-
-        <label>Trạng thái:</label><br>
-        <select name="status">
-            <option value="available">Còn</option>
-            <option value="unavailable">Hết</option>
-        </select><br><br>
-
-        <label>Tóm tắt:</label><br>
-        <textarea name="summary" rows="4" cols="50"></textarea><br><br>
-
-        <label>Link hình ảnh (URL):</label><br>
-        <input type="url" name="images"><br><br>
-        
-        <input type="submit" value="Thêm sách" class="btn">
+            <div class="form-group img-file">
+                <label>Chọn hình ảnh:</label><br>
+                <input type="file" name="images"><br><br>
+            </div>
+            
+            <input type="submit" value="Thêm sách" class="btn">
+        </div>
     </form>
 </main>
 

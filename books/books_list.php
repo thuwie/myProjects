@@ -12,7 +12,7 @@ $search_field = filter_input(INPUT_GET, 'field', FILTER_SANITIZE_STRING);
 
 try {
     // Build truy vấn SQL
-    $sql = "SELECT stt, title, author, category, publish_year, status, summary, images FROM books";
+    $sql = "SELECT id, title, author, category, publish_year, status, summary, images FROM books";
     $params = [];
     
     // Thêm điều kiện tìm kiếm nếu tham số tìm kiếm tồn tại
@@ -21,7 +21,7 @@ try {
         $params[] = "%$search_term%";
     }
     
-    $sql .= " ORDER BY stt";
+    $sql .= " ORDER BY id";
     
     // CHuẩn bị và thực hiện query
     $stmt = $pdo->prepare($sql);
@@ -74,7 +74,7 @@ try {
             <tbody>
                 <?php foreach ($books as $book): ?>
                     <tr>
-                        <td><?= htmlspecialchars($book['stt']) ?></td>
+                        <td><?= htmlspecialchars($book['id']) ?></td>
                         <td><?= htmlspecialchars($book['title']) ?></td>
                         <td><?= htmlspecialchars($book['author']) ?></td>
                         <td><?= htmlspecialchars($book['category']) ?></td>
@@ -89,9 +89,9 @@ try {
                             <?php endif; ?>
                         </td>
                         <td>
-                            <a href="books_edit.php?stt=<?= htmlspecialchars($book['stt']) ?>" 
+                            <a href="books_edit.php?id=<?= htmlspecialchars($book['id']) ?>" 
                                class="btn btn-small">Sửa</a>
-                            <a href="books_delete.php?stt=<?= htmlspecialchars($book['stt']) ?>"
+                            <a href="books_delete.php?id=<?= htmlspecialchars($book['id']) ?>"
                                class="btn btn-small btn-danger"
                                onclick="return confirm('Bạn có chắc chắn muốn xóa sách này?');">Xóa</a>
                         </td>

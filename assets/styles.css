@@ -210,3 +210,69 @@ footer {
   margin-top: 10px;
   color: white;
 }
+
+
+/*Form adding book*/
+.form-box {
+   width: 100%;
+   height: fit-content;
+   display: flex;
+   justify-content: center;
+}
+
+.container-box {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  border: 2px solid rgb(135, 64, 64);
+  padding: 15px;
+}
+
+.form-group {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 8px;
+}
+
+.form-group .publish_year {
+  width: 46%;
+}
+
+.status {
+  position: relative;
+}
+.status select {
+    position: absolute;
+    left: 44%;
+    width: 48%;
+    height: 60%;
+}
+
+.status label {
+  position: absolute;
+  left: 7%;
+}
+
+.name-book {
+  position: relative;
+}
+
+.desctiption {
+  position: relative;
+}
+
+.desctiption label {
+  position: absolute;
+  left: 7%;
+}
+
+.desctiption textarea {
+  width: 60%;
+  position: absolute;
+  right: 7%;
+}
+
+.img-file {
+  margin-top: 35px;
+}

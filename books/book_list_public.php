@@ -2,7 +2,7 @@
 session_start();
 
 // Chỉ cho phép người dùng đã đăng nhập và là sinh viên mới truy cập
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'sinhvien') {
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
     header('Location: ../index.php');
     exit;
 }
@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'sinhvien') {
 require_once '../database/db.php';
 
 // Truy vấn danh sách sách
-$sql = "SELECT stt, images, title, author, category, summary, status FROM books";
+$sql = "SELECT id, images, title, author, category, summary, status FROM books";
 $stmt = $pdo->query($sql);
 $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -32,7 +32,7 @@ $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <table border="1" cellspacing="0" cellpadding="8" style="margin: auto;">
       <tr>
         <th>STT</th>
-        <th>Hình ảnhảnh</th>
+        <th>Hình ảnh</th>
         <th>Tiêu đề</th>
         <th>Tác giả</th>
         <th>Thể loại</th>
@@ -41,7 +41,7 @@ $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
       </tr>
       <?php foreach ($books as $book): ?>
         <tr>
-          <td><?php echo htmlspecialchars($book['stt']); ?></td>
+          <td><?php echo htmlspecialchars($book['id']); ?></td>
           <td>
             <?php if (!empty($book['images'])): ?>
               <img src="<?= htmlspecialchars($book['images']) ?>" alt="Ảnh bìa" width="60">
