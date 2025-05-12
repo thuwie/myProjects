@@ -41,7 +41,7 @@
           </div>
           
           <div class="btn-login"> 
-            <button type ="submit">ĐĂNG NHẬP</button>
+            <button class="btn-submit" type ="submit">ĐĂNG NHẬP</button>
           </div>
           
           <div class="register">

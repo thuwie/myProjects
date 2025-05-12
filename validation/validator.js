@@ -1,17 +1,21 @@
 const validation = function(selector) {
+    
     const FORM = document.getElementById(selector);
     const messageElement = FORM.querySelector('.validation-message');
     const REQUIREMENT_OF_INPUTS = {};
+    const BTN_SUBMIT = FORM.querySelector('.btn-submit');
 
     var inputs = FORM.querySelectorAll('input');
     var maxLenghth;
+    var mess;
 
     const validator = {
         require: (field, value) => {
-           return value ?  '':  `Vui lòng nhập ${field} !!!`
+           return value ?  undefined:  `Vui lòng nhập ${field} !!!`
         }, 
         length: (field, value) => {
-            return value && value.length < 8 ? `${field} phải có ít nhất 8 kí tự !!!` : '';
+            var rs =  value.length < 8 ? `${field} phải có ít nhất 8 kí tự !!!` : undefined;
+            return rs ?  rs[0].toUpperCase() + rs.slice(1) : rs;
         }
     };
 
@@ -28,19 +32,38 @@ const validation = function(selector) {
 
 
    function addEvent(input) {
-    for(let i = 0; i < REQUIREMENT_OF_INPUTS[input.name].length; i++) {
-        var mess;
-        input.addEventListener('blur',  ()=> {
-            mess = validator[REQUIREMENT_OF_INPUTS[input.name][i]](input.getAttribute('alias'), input.value);
-            console.log(mess);
-            //Lỗi khi password lkhoong nhập gì đã ra thông báo nhập mk nhưng bị thay đổi thành null
-            messageElement.innerText = mess;
+        input.addEventListener('blur',  function() {
+             for(let i = 0; i < REQUIREMENT_OF_INPUTS[input.name].length; i++) {
+                    mess = validator[REQUIREMENT_OF_INPUTS[input.name][i]](input.getAttribute('alias'), input.value);
+                    if(mess) {
+                        messageElement.innerText = mess;
+                        break;
+                    } else {
+                        messageElement.innerText ="" ;
+                    };  
+             };
         });
-        if(mess === !'') break;  
-    };
+
+        input.addEventListener('input',  function() {
+            if(mess) {
+                 messageElement.innerText = "";
+            };
+        });
    };
 
     Array.from(inputs).forEach(input => addEvent(input));
+
+    //Kiểm tra người dùng đã nhập đầy đủ thông tin chưa rồi mới được đăng nhập
+    function validBeforeSubmit() {
+        console.log(FORM);
+        
+        BTN_SUBMIT.addEventListener('click', (e)=> {
+            mess && e.preventDefault();
+        });
+        //bug
+    };
+
+    validBeforeSubmit();
 
     //Hiển thị Password khi click icon
     function togglePass(formSelector) {
