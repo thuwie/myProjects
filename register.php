@@ -1,4 +1,48 @@
 <!-- register.php -->
+<?php
+session_start();
+require_once 'verify/sendmail.php'; // Đảm bảo bạn đã cấu hình PHPMailer đúng
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Nhận dữ liệu từ form
+    $masv = $_POST['masv'] ?? '';
+    $username = $_POST['username'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $password = $_POST['password'] ?? '';
+    
+    // Kiểm tra trùng tên đăng nhập hoặc email
+    require_once './database/db.php';
+    $sql_check = "SELECT * FROM users WHERE username = ? OR email = ?";
+    $stmt_check = $pdo->prepare($sql_check);
+    $stmt_check->execute([$username, $email]);
+    $user_check = $stmt_check->fetch(PDO::FETCH_ASSOC);
+
+    if($user_check){
+        echo "Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.";
+        exit;
+    }
+
+    // Tạo mã OTP
+    $otp = rand(100000, 999999);
+    $_SESSION['pending_user'] = [
+        'masv' => $masv,
+        'username' => $username,
+        'email' => $email,
+        'password' => $password,
+        'otp' => $otp
+    ];
+
+    // Gửi mã OTP qua email
+    $subject = "Mã xác thực đăng ký tài khoản";
+    $message = "Mã OTP của bạn là: $otp";
+    sendmail($email, $subject, $message);
+
+    // Chuyển hướng đến trang xác thực
+    header("Location: verify.php");
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -8,14 +52,16 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body>
-  <form class="form" action="./users/user_add.php" method="POST">
+  <form class="form" action="register.php" method="POST">
     <div class="login">
       <div class="img-logo">
         <img src="./public/logo_login.png" alt="Book logo">
       </div>
 
       <div class="input-element">
-        <input class="username" type="text" name="username" placeholder="Nhập tài khoản" required>
+        <input class="masv" type="text" name="masv" placeholder="Nhập mã sinh viên" required>
+
+        <input class="username" type="text" name="username" placeholder="Nhập tên tài khoản" required>
 
         <input class="email" type="email" name="email" placeholder="Nhập email" required>
         <span>Lưu ý: email sẽ được dùng để khôi phục tài khoản</span>
