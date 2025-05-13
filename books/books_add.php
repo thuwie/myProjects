@@ -9,14 +9,14 @@ $success_message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Lấy dự liệu từ POST
+    $images = filter_input(INPUT_POST, 'images', FILTER_SANITIZE_URL);
     $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
     $author = filter_input(INPUT_POST, 'author', FILTER_SANITIZE_STRING);
     $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_STRING);
     $publish_year = filter_input(INPUT_POST, 'publish_year', FILTER_VALIDATE_INT, 
         ["options" => ["min_range" => 1000, "max_range" => date('Y') + 1]]);
-    $status = $_POST['status'] ?? 'available';
     $summary = filter_input(INPUT_POST, 'summary', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $images = filter_input(INPUT_POST, 'images', FILTER_SANITIZE_URL);
+    $status = $_POST['status'] ?? 'available';
     
     // Xác thực dữ liệu
     $errors = [];
@@ -27,13 +27,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($errors)) {
         try {
-            $stmt = $pdo->prepare("INSERT INTO books (title, author, category, publish_year, status, summary, images) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt = $pdo->prepare("INSERT INTO books (images, title, author, category, publish_year, summary, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
             $result = $stmt->execute([$title, $author, $category, $publish_year, $status, $summary, $images]);
             
             if ($result) {
                 $success_message = "Thêm sách thành công!";
                 // Xóa dữ liệu form
-                $title = $author = $category = $publish_year = $status = $summary = $images = '';
+                $images = $title = $author = $category = $publish_year = $summary = $status = '';
             } else {
                 $error_message = "Có lỗi xảy ra khi thêm sách.";
             }
@@ -59,6 +59,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <form action="books_add.php" method="POST" class="form-box">
         <div class="container-box">
+            <div class="form-group img-file">
+                <label>Chọn hình ảnh:</label><br>
+                <input type="file" name="images"><br><br>
+            </div>
+
             <div class="form-group">
                  <label for="title">Tên sách:</label>
                 <input type="text" id="title" name="title" value="<?= htmlspecialchars($title ?? '') ?>" required>
@@ -69,24 +74,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="text" id="author" name="author" value="<?= htmlspecialchars($author ?? '') ?>" required>
             </div>
            
-             <div class="form-group">
+            <div class="form-group">
                 <label for="category">Thể loại:</label>
                 <input type="text" id="category" name="category" value="<?= htmlspecialchars($category ?? '') ?>" required>
-             </div>
+            </div>
             
-             <div class="form-group">
+            <div class="form-group">
                 <label for="publish_year">Xuất bản:</label>
                 <input class="publish_year" type="number" id="publish_year" name="publish_year" 
                     min="1000" max="<?= date('Y') + 1 ?>" 
                     value="<?= htmlspecialchars($publish_year ?? '') ?>" required>
-             </div>
-
-            <div class="form-group status">
-                <label>Trạng thái:</label><br>
-                <select name="status">
-                    <option value="available">Còn</option>
-                    <option value="unavailable">Hết</option>
-                </select><br><br>
             </div>
 
             <div class="form-group desctiption">
@@ -94,9 +91,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <textarea name="summary" rows="4" cols="50"></textarea><br><br>
             </div>
 
-            <div class="form-group img-file">
-                <label>Chọn hình ảnh:</label><br>
-                <input type="file" name="images"><br><br>
+            <div class="form-group status">
+                <label>Trạng thái:</label><br>
+                <select name="status">
+                    <option value="available">Có sẵn</option>
+                    <option value="unavailable">Đã mượn</option>
+                </select><br><br>
             </div>
             
             <input type="submit" value="Thêm sách" class="btn">

@@ -297,3 +297,24 @@ footer {
 .register-body {
   background-image: var(--bg-img);
 }
+
+/*----------------BOOK_LIST_PUBLIC--------------------*/
+.btn {
+  padding: 6px 12px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background-color: #2980b9;
+}
+
+.btn[disabled] {
+  background-color: #ccc;
+  color: #666;
+}
+
+

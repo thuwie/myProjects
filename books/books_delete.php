@@ -5,14 +5,14 @@ require_once '../database/db.php';
 $error_message = '';
 $success_message = '';
 
-if (isset($_GET['stt']) && is_numeric($_GET['stt'])) {
-    $book_id = intval($_GET['stt']);
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+    $book_id = intval($_GET['id']);
     
     try {
         $pdo->beginTransaction();
         
         // Kiểm tra sách có tồn tại và có đang được mượn không
-        $stmt = $pdo->prepare("SELECT status FROM books WHERE stt = ?");
+        $stmt = $pdo->prepare("SELECT status FROM books WHERE id = ?");
         $stmt->execute([$book_id]);
         $book = $stmt->fetch();
         
@@ -25,7 +25,7 @@ if (isset($_GET['stt']) && is_numeric($_GET['stt'])) {
         }
         
         // Kiểm tra còn phiếu mượn nào chưa trả không
-        $stmt = $pdo->prepare("SELECT COUNT(*) FROM loans WHERE book_id = ? AND actual_return IS NULL");
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM loans WHERE book_id = ? AND return_date IS NULL");
         $stmt->execute([$book_id]);
         $has_unreturned = $stmt->fetchColumn() > 0;
         
@@ -38,7 +38,7 @@ if (isset($_GET['stt']) && is_numeric($_GET['stt'])) {
         $stmt->execute([$book_id]);
         
         // Xóa sách
-        $stmt = $pdo->prepare("DELETE FROM books WHERE stt = ?");
+        $stmt = $pdo->prepare("DELETE FROM books WHERE id = ?");
         $stmt->execute([$book_id]);
         
         $pdo->commit();

@@ -38,6 +38,8 @@
               <i class="fa-solid fa-eye show-password"></i>
             </span>
             <span class="validation-message"></span>
+            <input type="checkbox" id="remember" name="remember">
+            <label for="remember">Nhớ mật khẩu</label><br><br>
           </div>
           
           <div class="btn-login"> 
@@ -76,6 +78,7 @@
     <p>Chào mừng <strong>Quản lý</strong> đến với hệ thống thư viện. Vui lòng chọn chức năng bên trên để tiếp tục.</p>
   <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user'): ?>
     <h2>Dành cho sinh viên:</h2>
+    
     <ul>
       <li><a href="books/book_list_public.php">Xem danh sách sách hiện có</a></li>
       <li>Tra cứu thông tin mượn / trả sách của bạn</li>
