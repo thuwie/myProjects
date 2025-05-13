@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
 require_once '../database/db.php';
 
 // Truy vấn danh sách sách
-$sql = "SELECT id, images, title, author, category, summary, status FROM books";
+$sql = "SELECT stt, images, title, author, category, summary, status FROM books";
 $stmt = $pdo->query($sql);
 $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -41,7 +41,7 @@ $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
       </tr>
       <?php foreach ($books as $book): ?>
         <tr>
-          <td><?php echo htmlspecialchars($book['id']); ?></td>
+          <td><?php echo htmlspecialchars($book['stt']); ?></td>
           <td>
             <?php if (!empty($book['images'])): ?>
               <img src="<?= htmlspecialchars($book['images']) ?>" alt="Ảnh bìa" width="60">

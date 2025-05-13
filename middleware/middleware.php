@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once '../database/db.php'; // kết nối DB
-$_SESSION['user_id'] = $user['id'];
+$_SESSION['user_id'] = $user['masv'];
 $_SESSION['username'] = $user['username'];
 $_SESSION['role'] = $user['role']; // thêm dòng này
 
@@ -16,6 +16,14 @@ $stmt->execute([$masv]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Kiểm tra tồn tại & mật khẩu
-echo $user
+if ($user && password_verify($password, $user['password'])) {
+    $_SESSION['user_id'] = $user['masv'];
+    $_SESSION['username'] = $user['username'];
+    $_SESSION['role'] = $user['role']; // Lưu role
+    header("Location: ../index.php");
+    exit;
+} else {
+    echo "<p style='color: red;'>Tên đăng nhập hoặc mật khẩu sai. Vui lòng thử lại.</p>";
+}
 
 ?>
