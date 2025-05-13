@@ -32,7 +32,7 @@
           </div>
 
           <div class="input-element">
-            <input class="username" type="text" name="username" alias="tài khoản" placeholder ="Nhập tài khoản" rules ="require">
+            <input class="username" type="text" name="masv" alias="tài khoản" placeholder ="Nhập mã sinh viên" rules ="require">
             <span class="password-section">
               <input class="password" type="password" name="password" alias = "mật khẩu" placeholder ="Nhập mật khẩu" rules ="require|length-8">
               <i class="fa-solid fa-eye show-password"></i>

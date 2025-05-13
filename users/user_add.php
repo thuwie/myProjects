@@ -1,8 +1,10 @@
 <?php
 require_once '../database/db.php';
+$masv = $_POST['masv'] ?? '';
 $username = $_POST['username'] ?? '';
+$email = $_POST['email'] ?? '';
 $password = $_POST['password'] ?? '';
-$role = $_POST['role'] ?? 'user';
+$role = 'user';
 
 $sql_check = "SELECT * FROM users WHERE username = ?";
 $stmt_check = $pdo->prepare($sql_check);
@@ -16,12 +18,14 @@ if($user_check){
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     // Câu lệnh SQL để chèn dữ liệu vào bảng 'users'
-    $sql = "INSERT INTO users (username, password, role) VALUES (:username, :password, :role)";
+    $sql = "INSERT INTO users (masv, username, password, email, role) VALUES (:masv, :username, :password, :email, :role)";
 
     // Chuẩn bị và thực thi câu lệnh
     $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':masv', $masv);
     $stmt->bindParam(':username', $username);
     $stmt->bindParam(':password', $hashed_password);
+    $stmt->bindParam(':email', $email);
     $stmt->bindParam(':role', $role);
 
     if ($stmt->execute()) {

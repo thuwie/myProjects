@@ -51,8 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link rel="stylesheet" href="assets/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
-<body>
-  <form class="form" action="register.php" method="POST">
+<body class="register-body">
+  <form class="form" action="./users/user_add.php" method="POST">
     <div class="login">
       <div class="img-logo">
         <img src="./public/logo_login.png" alt="Book logo">
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="input-element">
         <input class="masv" type="text" name="masv" placeholder="Nhập mã sinh viên" required>
 
-        <input class="username" type="text" name="username" placeholder="Nhập tên tài khoản" required>
+        <input class="username" type="text" name="username" placeholder="Nhập tên sinh viên" required>
 
         <input class="email" type="email" name="email" placeholder="Nhập email" required>
         <span>Lưu ý: email sẽ được dùng để khôi phục tài khoản</span>
