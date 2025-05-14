@@ -21,6 +21,7 @@ const validation = function(selector) {
 
     Array.from(inputs).forEach(input => {
         var rule = input.getAttribute('rules').split('|');
+        console.log(rule);
         
         if(rule.some(rule => rule.includes('-'))) {
             maxLenghth = rule[1].split('-')[1];

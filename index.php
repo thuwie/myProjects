@@ -95,20 +95,5 @@
   <script> 
     validation('login-form');
   </script>
-
-  <!-- <script>
-  // Bắt tất cả icon toggle-password
-  document.querySelectorAll('.toggle-password').forEach(function(toggleIcon) {
-    toggleIcon.addEventListener('click', function() {
-      const passwordInput = this.previousElementSibling;
-      const isPassword = passwordInput.type === "password";
-
-      passwordInput.type = isPassword ? "text" : "password";
-      this.classList.toggle("fa-eye");
-      this.classList.toggle("fa-eye-slash");
-    });
-  });
-</script> -->
-
 </body>
 </html>

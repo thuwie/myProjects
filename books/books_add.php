@@ -9,40 +9,56 @@ $success_message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Lấy dự liệu từ POST
-    $images = filter_input(INPUT_POST, 'images', FILTER_SANITIZE_URL);
     $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
     $author = filter_input(INPUT_POST, 'author', FILTER_SANITIZE_STRING);
     $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_STRING);
     $publish_year = filter_input(INPUT_POST, 'publish_year', FILTER_VALIDATE_INT, 
         ["options" => ["min_range" => 1000, "max_range" => date('Y') + 1]]);
-    $summary = filter_input(INPUT_POST, 'summary', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $status = $_POST['status'] ?? 'available';
-    
-    // Xác thực dữ liệu
-    $errors = [];
-    if (empty($title)) $errors[] = "Tên sách không được để trống";
-    if (empty($author)) $errors[] = "Tác giả không được để trống";
-    if (empty($category)) $errors[] = "Thể loại không được để trống";
-    if ($publish_year === false) $errors[] = "Năm xuất bản không hợp lệ";
+    $summary = filter_input(INPUT_POST, 'summary', FILTER_SANITIZE_STRING);
 
-    if (empty($errors)) {
-        try {
-            $stmt = $pdo->prepare("INSERT INTO books (images, title, author, category, publish_year, summary, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            $result = $stmt->execute([$title, $author, $category, $publish_year, $status, $summary, $images]);
-            
-            if ($result) {
-                $success_message = "Thêm sách thành công!";
-                // Xóa dữ liệu form
-                $images = $title = $author = $category = $publish_year = $summary = $status = '';
-            } else {
-                $error_message = "Có lỗi xảy ra khi thêm sách.";
+    //Tạo đường dẫn thư mục nơi chứa ảnh
+    $uploadDir = "uploads/"; // thư mục lưu ảnh
+    $fileName = time() . "_" . basename($_FILES["image"]["name"]);
+    $targetFile = $uploadDir . $fileName;
+
+      // Tạo thư mục nếu chưa tồn tại
+    if (!file_exists($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    };
+
+     // Di chuyển file từ temp (là đường dẫn tạm thời trên server) vào thư mục đích
+    if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
+        // Lưu đường dẫn vào DB
+        $imagePath = $targetFile;
+    
+        // Xác thực dữ liệu
+        $errors = [];
+        if (empty($title)) $errors[] = "Tên sách không được để trống";
+        if (empty($author)) $errors[] = "Tác giả không được để trống";
+        if (empty($category)) $errors[] = "Thể loại không được để trống";
+        if ($publish_year === false) $errors[] = "Năm xuất bản không hợp lệ";
+
+        if (empty($errors)) {
+            try {
+                $stmt = $pdo->prepare("INSERT INTO books (images, title, author, category, publish_year, summary) VALUES (?, ?, ?, ?, ?, ?)");
+                $result = $stmt->execute([$imagePath, $title, $author, $category,  $publish_year, $summary ]);
+                
+                if ($result) {
+                    $success_message = "Thêm sách thành công!";
+                    // Xóa dữ liệu form
+                    $images = $title = $author = $category = $publish_year = $summary = $status = '';
+                } else {
+                    $error_message = "Có lỗi xảy ra khi thêm sách.";
+                }
+            } catch (PDOException $e) {
+                $error_message = "Lỗi database: " . $e->getMessage();
             }
-        } catch (PDOException $e) {
-            $error_message = "Lỗi database: " . $e->getMessage();
-        }
+        } else {
+            $error_message = implode("<br>", $errors);
+        };
     } else {
-        $error_message = implode("<br>", $errors);
-    }
+        echo "Upload thất bại.";
+    };
 }
 ?>
 
@@ -57,11 +73,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <p style="color: green; font-weight: bold;"><?= $success_message ?></p>
     <?php endif; ?>
 
-    <form action="books_add.php" method="POST" class="form-box">
+    <form class="form-box" action="books_add.php" method="POST" enctype="multipart/form-data">
         <div class="container-box">
             <div class="form-group img-file">
                 <label>Chọn hình ảnh:</label><br>
-                <input type="file" name="images"><br><br>
+                <input type="file" name="image"><br><br>
             </div>
 
             <div class="form-group">
@@ -88,15 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="form-group desctiption">
                 <label>Tóm tắt:</label><br>
-                <textarea name="summary" rows="4" cols="50"></textarea><br><br>
-            </div>
-
-            <div class="form-group status">
-                <label>Trạng thái:</label><br>
-                <select name="status">
-                    <option value="available">Có sẵn</option>
-                    <option value="unavailable">Đã mượn</option>
-                </select><br><br>
+                <textarea name="summary" rows="2" cols="50"></textarea><br><br>
             </div>
             
             <input type="submit" value="Thêm sách" class="btn">

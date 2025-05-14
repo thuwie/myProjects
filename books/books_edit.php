@@ -36,7 +36,6 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_STRING);
     $publish_year = filter_input(INPUT_POST, 'publish_year', FILTER_VALIDATE_INT);
     $summary = trim($_POST['summary'] ?? '');
-    $status = filter_input(INPUT_POST, 'status', FILTER_SANITIZE_STRING);
 
     // Bước kiểm tra dữ liệu
     $errors = [];
@@ -105,7 +104,7 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="hidden" name="id" value="<?= htmlspecialchars($book['id']) ?>">
 
             <label>Link hình ảnh (URL):</label><br>
-            <input type="url" name="images" value="<?= htmlspecialchars($book['images']) ?>"><br><br>
+            <input type="text" name="images" value="<?= htmlspecialchars($book['images']) ?>"><br><br>
             
             <label for="title">Tên sách:</label>
             <input type="text" id="title" name="title" 
