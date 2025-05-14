@@ -92,7 +92,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
            
             <div class="form-group">
                 <label for="category">Thể loại:</label>
-                <input type="text" id="category" name="category" value="<?= htmlspecialchars($category ?? '') ?>" required>
+                <select name="category" id="category">
+                    <option value="TK">sách tham khảo</option>
+                    <option value="GK">sách giáo khoa</option>
+                    <option value="VH">sách văn học</option>
+                    <option value="TN">sách thiếu nhi </option>
+                </select>
+                <!-- <input type="text" id="category" name="category" value="<?= htmlspecialchars($category ?? '') ?>" required> -->
             </div>
             
             <div class="form-group">

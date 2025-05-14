@@ -1,5 +1,5 @@
 <?php
-$base_url = '/MYPROJECTS/'; 
+$base_url = '/LIBRARY/'; 
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -10,5 +10,13 @@ $base_url = '/MYPROJECTS/';
 </head>
 <body>
     <header>
-        <h1>Hệ thống quản lý thư viện</h1>
+        <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'user'): ?>
+            <h1>📚 Danh sách sách hiện có:</h1>
+        <?php else: ?>
+            <h1>📖 Hệ thống quản lý thư viện 📖</h1>
+        <?php endif; ?>
+        <span class="user-avt">
+            <?php echo isset($_SESSION['username']) ? $_SESSION['username'] : ''; ?>
+            <i class="fa-solid fa-user"></i>
+        </span>
     </header>

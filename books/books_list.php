@@ -39,7 +39,7 @@ try {
 <?php include("../includes/nav.php"); ?>
 
 <main>
-    <h2>📚 Danh sách sách</h2>
+    <link rel="stylesheet" href=""../assets/more.css"">
     
     <?php if ($error_message): ?>
         <p style="color: red; font-weight: bold;"><?= $error_message ?></p>
@@ -96,7 +96,7 @@ try {
     <a href="books_add.php" class="btn">+ Thêm sách</a>
 
     <?php if (!empty($books)): ?>
-        <table>
+        <table border="1" cellspacing="0" cellpadding="8" style="margin: auto; width: 100%; border-collapse: collapse;">
             <thead>
                 <tr>
                     <th>STT</th>

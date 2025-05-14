@@ -1,0 +1,118 @@
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: auto;
+}
+
+table th, table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+    vertical-align: top;
+}
+
+table img {
+    max-width: 60px;
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: none;
+  z-index: 999;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: 260px;
+  height: 100%;
+  background-color: #A67B5B; /* Nâu vintage */
+  color: #FAF1E6; /* Trắng ngà */
+  padding: 20px;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Khi mở sidebar */
+.sidebar.open {
+  transform: translateX(0);
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin-top: 60px;
+}
+
+.sidebar-menu li {
+  margin: 18px 0;
+}
+
+.sidebar-menu a {
+  color: #FAF1E6; /* trắng ngà */
+  text-decoration: none;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.3s, padding-left 0.3s;
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+
+.sidebar-menu a:hover {
+  background-color: #D9C2A5; /* Beige */
+  color: #4E3629; /* Nâu đậm */
+  padding-left: 16px;
+}
+
+/* Nút đóng */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 28px;
+  background: none;
+  border: none;
+  color: #FAF1E6;
+  cursor: pointer;
+}
+
+/* Nút mở */
+.open-sidebar-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 40px;
+  background: none;
+  border: none;
+  color: #4E3629;
+  z-index: 1001;
+  cursor: pointer;
+}
+
+/* Nút Đăng xuất trong sidebar */
+.sidebar-menu .logout-btn a {
+  color: #FAF1E6; /* Màu chữ trắng ngà */
+  text-decoration: none;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  transition: background 0.3s, padding-left 0.3s;
+}
+
+.sidebar-menu .logout-btn a:hover {
+  background-color: #D9C2A5; /* Beige */
+  color: #4E3629; /* Nâu đậm */
+  padding-left: 16px;
+}
