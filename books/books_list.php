@@ -129,7 +129,13 @@ try {
                         <td><?= htmlspecialchars($book['category']) ?></td>
                         <td><?= htmlspecialchars($book['publish_year']) ?></td>
                         <td><?= htmlspecialchars($book['summary']) ?></td>
-                        <td><?= ($book['status'] === 'available') ? 'Sẵn sàng' : 'Đã mượn' ?></td>
+                        <td style="text-align: center"><?= ($book['status'] === 'available') ? 
+                        '<span class="available-color">
+                                <i class="fa-regular fa-circle-check"></i>
+                        </span>' : 
+                        '<span class="inavailable-color"> 
+                                <i class="fa-regular fa-circle-xmark"></i>
+                        </span>' ?></td>
                         
                         <td>
                             <div class="icon-display">

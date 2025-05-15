@@ -31,3 +31,11 @@ form {
 .btn-color-danger {
     color: rgb(245, 14, 14);
 }
+
+.available-color {
+    color: green;
+}
+
+.inavailable-color {
+    color: red;
+}
