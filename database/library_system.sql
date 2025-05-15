@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 15, 2025 at 05:17 PM
+-- Generation Time: May 15, 2025 at 07:43 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -58,10 +58,27 @@ INSERT INTO `books` (`id`, `images`, `title`, `author`, `category`, `publish_yea
 ('KN_11', 'uploads/1747311177_im-lang-suc-manh-cua-nguoi-huong-noi.png', 'Im Lặng: Sức Mạnh Của Người Hướng Nội', 'Susan Cain', 'KN', 2012, 'Tôn vinh giá trị của người hướng nội trong một thế giới ưa chuộng sự hướng ngoại.', 'available'),
 ('KN_12', 'uploads/1747311226_dam-bi-ghet.png', 'Dám Bị Ghét', 'Ichiro Kishimi & Fumitake Koga', 'KN', 2013, 'Giới thiệu triết lý của Alfred Adler về tự do và hạnh phúc.', 'available'),
 ('KN_13', 'uploads/1747312127_suc-manh-cua-eq.png', 'Sức Mạnh Của EQ', 'Patrick King', 'KN', 2024, 'Cuốn sách nhấn mạnh rằng thành công trong cuộc sống phụ thuộc vào cách bạn đối xử với mọi người, và EQ là kỹ năng có thể rèn luyện được.', 'available'),
+('TH_02', 'uploads/1747325522_homodeus-luoc-su-tuong-lai.png', 'Homo Deus – Lược Sử Tương Lai', 'Yuval Noah Harari', 'TH', 2015, 'Dự đoán tương lai con người từ góc nhìn triết học và công nghệ. |', 'available'),
+('TH_03', 'uploads/1747325548_sapiens-luoc-su-loai-nguoi.png', 'Sapiens – Lược Sử Loài Người', 'Yuval Noah Harari', 'TH', 2011, 'Phân tích sự phát triển của nhân loại với góc nhìn lịch sử – triết học. |', 'available'),
+('TH_04', 'uploads/1747325570_su-an-ui-cua-triet-hoc.png', 'Sự An Ủi Của Triết Học', 'Alain de Botton', 'TH', 2000, 'Dẫn dắt triết học ứng dụng giúp con người vượt qua đau khổ. |', 'available'),
+('TH_05', 'uploads/1747325596_su-xa-la.png', 'Sự Xa Lạ (The Stranger)', 'Albert Camus', 'TH', 1942, 'Dưới dạng tiểu thuyết, phản ánh triết lý phi lý và sự vô nghĩa của đời sống. |', 'available'),
+('TH_06', 'uploads/1747325627_than-thoai-sisyphe.png', 'Thần Thoại Sisyphe', 'Albert Camus', 'TH', 1942, 'So sánh cuộc đời với Sisyphe – người mãi đẩy đá lên núi, nói về ý nghĩa và sự nổi loạn chống lại phi lý.', 'available'),
 ('TK_01', 'uploads/1747306319_chien-binh-cau-vong.png', 'Chiến Binh Cầu Vồng (Laskar Pelangi)', 'Andrea Hirata', 'TK', 2005, 'Kể về 10 đứa trẻ nghèo vượt khó ở Indonesia và hành trình học tập, khát vọng vươn lên từ nghịch cảnh.', 'available'),
 ('TK_02', 'uploads/1747313898_kien-hanh-va-dinh-kien.png', 'Kiêu Hãnh Và Định Kiến', ' Jane Austen', 'TK', 1813, 'Chuyện tình của Elizabeth và Darcy vượt qua những định kiến xã hội và bản thân.', 'available'),
+('TK_03', 'uploads/1747325653_the-gioi-la-y-chi-va-bieu-tuong.png', 'Thế Giới Là Ý Chí Và Biểu Tượng', 'Arthur Schopenhauer', 'TK', 1818, 'Nhìn nhận cuộc sống là sự biểu hiện của ý chí mù quáng, mang màu sắc bi quan. |', 'available'),
 ('TL_01', 'uploads/1747306378_di-tim-le-song.png', 'Đi Tìm Lẽ Sống (Man’s Search for Meaning)', 'Viktor E. Frankl', 'TL', 1946, 'Trải nghiệm của tác giả tại trại tập trung Đức Quốc xã và cách ông tìm ra ý nghĩa cuộc sống ngay cả trong đau khổ.', 'available'),
 ('TL_02', 'uploads/1747306529_nha-gia-kim.png', 'Nhà Giả Kim (The Alchemist)', 'Paulo Coelho', 'TL', 1988, 'Hành trình của chàng chăn cừu Santiago đi tìm kho báu, khám phá bản thân và ý nghĩa cuộc sống.', 'available'),
+('TL_03', 'uploads/1747328254_cam-xuc-la-ke-thu-so-mot-cua-thanh-cong.png', 'Cảm Xúc Là Kẻ Thù Số Một Của Thành Công', 'Ryan Holiday', 'TL', 2014, 'Áp dụng chủ nghĩa khắc kỷ để kiểm soát cảm xúc tiêu cực và tăng năng suất. |', 'available'),
+('TL_04', 'uploads/1747328288_chung-ta-la-ai.png', 'Chúng Ta Là Ai (Behave)', 'Robert Sapolsky', 'TL', 2017, 'Giải thích hành vi con người từ di truyền, môi trường đến thần kinh học. |', 'available'),
+('TL_05', 'uploads/1747328565_cuoc-doi-soi-to.png', 'Cuộc Đời Soi Tỏ (The Examined Life)', 'Stephen Grosz', 'TL', 2013, 'Các câu chuyện trị liệu tâm lý giúp hiểu rõ hành vi và cảm xúc con người. |', 'available'),
+('TL_06', 'uploads/1747328607_nhung-don-tam-ly-trong-thuyet-phuc.png', 'Những Đòn Tâm Lý Trong Thuyết Phục (Influence)', 'Morgan Housel', 'TL', 2020, 'Phân tích hành vi tài chính từ góc nhìn tâm lý học và cảm xúc cá nhân. |', 'available'),
+('TL_07', 'uploads/1747328648_sao-ta-lam-dieu-ta-lam.png', 'Tại Sao Chúng Ta Làm Điều Mình Làm? (Why We Do What We Do)', 'Edward L. Deci', 'TL', 1995, 'Giải thích động lực nội tại và ảnh hưởng của môi trường đến hành vi.', 'available'),
+('TL_08', 'uploads/1747328679_tam-ly-hoc-dam-dong.png', 'Tâm Lý Học Đám Đông (The Crowd)', 'Gustave Le Bon', 'TL', 1895, 'Nghiên cứu cách suy nghĩ và hành vi của cá nhân thay đổi khi ở trong đám đông.', 'available'),
+('TL_09', 'uploads/1747328720_tam-ly-hoc-thanh-cong.png', 'Tâm Lý Học Thành Công', 'Carol S. Dweck', 'TL', 2006, 'Giới thiệu khái niệm “mindset”: tư duy cố định vs tư duy phát triển.', 'available'),
+('TL_10', 'uploads/1747329328_tam-ly-hoc-ve-tien.png', 'Tâm Lý Học Về Tiền (The Psychology of Money)', 'Morgan Housel', 'TL', 2020, 'Phân tích hành vi tài chính từ góc nhìn tâm lý học và cảm xúc cá nhân. |', 'available'),
+('TL_11', 'uploads/1747329356_tam-tri-vuot-thoi-gian.png', 'Tâm Trí Vượt Thời Gian (The Time Paradox)', 'Philip Zimbardo', 'TL', 2008, 'Cách nhận thức thời gian ảnh hưởng đến quyết định và hạnh phúc. |', 'available'),
+('TL_12', 'uploads/1747329381_thoi-mien-bang-ngon-tu.png', 'Thôi Miên Bằng Ngôn Từ', 'Joe Vitale', 'TL', 2007, 'Tập trung vào cách sử dụng ngôn ngữ để thuyết phục và gây ảnh hưởng. |', 'available'),
+('TL_13', 'uploads/1747329410_tri-tue-xuc-cam.png', 'Trí Tuệ Xúc Cảm (Emotional Intelligence)', 'Daniel Goleman', 'TL', 1995, 'Khẳng định vai trò của EQ quan trọng hơn IQ trong thành công và cuộc sống. |', 'available'),
 ('TN_01', 'uploads/1747309140_joni-mat-tit-va-dong-bon-tinh-nghich.png', 'Joni Mặt Tịt và Đồng Bọn Tinh Nghịch', 'Nguyễn Khắc Cường', 'TN', 2023, 'Câu chuyện hài hước và nhân văn về chú mèo Joni và những người bạn, phản ánh đời sống thị dân hiện đại thông qua góc nhìn của loài vật.', 'available'),
 ('VH_01', 'uploads/1747306408_khong-gia-dinh.png', 'Không Gia Đình (Sans Famille)', 'Hector Malot', 'VH', 1878, 'Cuộc hành trình của cậu bé Rémi đi khắp nước Pháp để tìm gia đình thật sự của mình.', 'available'),
 ('VH_02', 'uploads/1747306436_lao-hac.png', 'Lão Hạc', 'Nam Cao', 'VH', 1943, 'Một ông lão nghèo, yêu thương con, chấp nhận đói khổ để giữ gìn phẩm giá và dành phần tốt đẹp cho con trai.', 'available'),
