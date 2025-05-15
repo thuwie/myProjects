@@ -72,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <main>
+    <link rel="stylesheet" href="../assets/styles.css">
     <h2>Thêm sách mới</h2>
     
     <?php if ($error_message): ?>

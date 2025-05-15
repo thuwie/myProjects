@@ -39,7 +39,10 @@ try {
 <?php include("../includes/nav.php"); ?>
 
 <main>
-    <link rel="stylesheet" href=""../assets/more.css"">
+    <link rel="stylesheet" href="../assets/more.css">
+    <link rel="stylesheet" href="../assets/styles.css">
+    <link rel="stylesheet" href="../assets/p_adding.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     
     <?php if ($error_message): ?>
         <p style="color: red; font-weight: bold;"><?= $error_message ?></p>
@@ -93,7 +96,7 @@ try {
         document.addEventListener('DOMContentLoaded', toggleSearchInput);
     </script>
 
-    <a href="books_add.php" class="btn">+ Thêm sách</a>
+    <a href="books_add.php" class="btn btn-adding-book">+ Thêm sách</a>
 
     <?php if (!empty($books)): ?>
         <table border="1" cellspacing="0" cellpadding="8" style="margin: auto; width: 100%; border-collapse: collapse;">
@@ -129,11 +132,16 @@ try {
                         <td><?= ($book['status'] === 'available') ? 'Sẵn sàng' : 'Đã mượn' ?></td>
                         
                         <td>
-                            <a href="books_edit.php?id=<?= htmlspecialchars($book['id']) ?>" 
-                               class="btn btn-small">Sửa</a>
+                            <div class="icon-display">
+                                <a href="books_edit.php?id=<?= htmlspecialchars($book['id']) ?>" class="btn-small btn-color-primary">
+                                    <i class="fa-solid fa-pen"></i>
+                                 </a>
                             <a href="books_delete.php?id=<?= htmlspecialchars($book['id']) ?>"
-                               class="btn btn-small btn-danger"
-                               onclick="return confirm('Bạn có chắc chắn muốn xóa sách này?');">Xóa</a>
+                               class=" btn-small btn-color-danger"
+                               onclick="return confirm('Bạn có chắc chắn muốn xóa sách này?');">
+                                    <i class="fa-solid fa-trash"></i>
+                            </a>
+                            </div>
                         </td>
                     </tr>
                 <?php endforeach; ?>

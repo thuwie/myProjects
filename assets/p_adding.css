@@ -1,0 +1,33 @@
+main {
+    position: relative;
+}
+
+.btn-adding-book {
+    position: absolute;
+    left: 432px;
+    top: 16px;
+}
+
+main form select {
+    font-size: medium;
+    border-radius: 5px;
+}
+
+form {
+    position: relative;
+    top: -20px;
+}
+
+.icon-display {
+    display: flex;
+    justify-content: space-around;
+}
+
+.btn-color-primary {
+    color: blue;
+    margin-right: 17px;
+}
+
+.btn-color-danger {
+    color: rgb(245, 14, 14);
+}

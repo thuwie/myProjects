@@ -5,7 +5,7 @@ const validation = function(selector) {
     const REQUIREMENT_OF_INPUTS = {};
     const BTN_SUBMIT = FORM.querySelector('.btn-submit');
 
-    var inputs = FORM.querySelectorAll('input');
+    var inputs = FORM.querySelectorAll("input:not(#remember)");
     var maxLenghth;
     var mess;
 
@@ -20,8 +20,14 @@ const validation = function(selector) {
     };
 
     Array.from(inputs).forEach(input => {
-        var rule = input.getAttribute('rules').split('|');
-        console.log(rule);
+        var rule = input.getAttribute('rules');
+        console.log( typeof rule);
+        
+        if(rule.includes('|')) {
+            rule = rule.split("|");
+        } else {
+            rule = [rule];
+        };
         
         if(rule.some(rule => rule.includes('-'))) {
             maxLenghth = rule[1].split('-')[1];
