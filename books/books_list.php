@@ -99,7 +99,7 @@ try {
         <table border="1" cellspacing="0" cellpadding="8" style="margin: auto; width: 100%; border-collapse: collapse;">
             <thead>
                 <tr>
-                    <th>STT</th>
+                    <th>ID</th>
                     <th>Hình ảnh</th>
                     <th>Tên sách</th>
                     <th>Tác giả</th>

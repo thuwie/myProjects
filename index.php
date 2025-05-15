@@ -128,7 +128,11 @@
           <tr data-book-id="<?= $book['id'] ?>">
             <td><?php echo htmlspecialchars($book['id']); ?></td>
             <td>
-              <?= !empty($book['images']) ? "<img src='" . htmlspecialchars($book['images']) . "' width='60'>" : "Không có" ?>
+              <?php if (!empty($book['images'])): ?>
+                <img src="<?= htmlspecialchars($book['images']) ?>" alt="Ảnh bìa" width="60">
+              <?php else: ?>
+                Không có
+              <?php endif; ?>
             </td>
             <td><?= htmlspecialchars($book['title']); ?></td>
             <td><?= htmlspecialchars($book['author']); ?></td>
