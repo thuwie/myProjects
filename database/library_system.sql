@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 13, 2025 at 06:03 PM
+-- Host: 127.0.0.1:3306
+-- Generation Time: May 15, 2025 at 05:17 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `books` (
-  `stt` int(11) NOT NULL,
+  `id` varchar(11) NOT NULL,
   `images` varchar(500) DEFAULT NULL,
   `title` varchar(255) DEFAULT NULL,
   `author` varchar(255) DEFAULT NULL,
@@ -42,25 +42,44 @@ CREATE TABLE `books` (
 -- Dumping data for table `books`
 --
 
-INSERT INTO `books` (`stt`, `images`, `title`, `author`, `category`, `publish_year`, `summary`, `status`) VALUES
-(1, 'images/Nha-Gia-Kim-Paulo-Coelho.jpg', 'Nhà giả kim', 'Paulo Coelho', 'Truyền cảm hứng', 1988, 'Một chàng trai trẻ lên đường tìm kho báu và khám phá ra kho báu thật sự là hành trình khám phá bản thân.', 'available'),
-(2, NULL, 'Mỗi lần vấp ngã là một lần trưởng thành', 'Cherry Nguyễn', 'Kỹ năng sống', 2020, 'Cuốn sách truyền cảm hứng vượt qua thất bại để trưởng thành và mạnh mẽ hơn mỗi ngày.', 'available'),
-(3, NULL, 'Tôi thấy hoa vàng trên cỏ xanh', 'Nguyễn Nhật Ánh', 'Văn học', 2010, 'Câu chuyện nhẹ nhàng về tuổi thơ, tình anh em và vùng quê yên bình đầy xúc cảm.', 'available'),
-(4, NULL, 'Nhật ký chú bé nhút nhát', 'Jeff Kinney', 'Hài hước', 2007, 'Nhật ký hài hước của một cậu bé tuổi teen với những tình huống dở khóc dở cười ở trường học.', 'available'),
-(5, NULL, 'Totto-chan: Cô bé bên cửa sổ', 'Tetsuko Kuroyanagi', 'Văn học thiếu nhi', 1981, 'Câu chuyện cảm động về một cô bé khác biệt và ngôi trường đặc biệt dạy trẻ bằng tình yêu thương.', 'available'),
-(6, NULL, 'Trên đường băng', 'Tony Buổi Sáng', 'Phát triển bản thân', 2014, 'Những bài học đời sống, lời khuyên thiết thực dành cho các bạn trẻ chuẩn bị bước vào đời.', 'available'),
-(7, NULL, 'Tuổi trẻ đáng giá bao nhiêu', 'Rosie Nguyễn', 'Động lực sống', 2016, 'Gợi mở về việc sống có định hướng, đọc sách, học ngoại ngữ và trải nghiệm tuổi trẻ ý nghĩa.', 'available'),
-(8, NULL, 'Dám bị ghét', 'Ichiro Kishimi & Fumitake Koga', 'Tâm lý học', 2013, 'Một cuộc đối thoại giữa triết gia và thanh niên về tự do, hạnh phúc và dám sống theo cách riêng.', 'available'),
-(9, NULL, 'Chiến binh cầu vồng', 'Andrea Hirata', 'Truyền cảm hứng', 2005, 'Câu chuyện có thật về các học sinh nghèo ở Indonesia vượt khó học tập đầy cảm hứng.', 'available'),
-(10, NULL, 'Đắc nhân tâm', 'Dale Carnegie', 'Kỹ năng giao tiếp', 1936, 'Cuốn sách kinh điển giúp bạn xây dựng mối quan hệ tốt, gây ảnh hưởng tích cực đến người khác.', 'available'),
-(11, NULL, 'Quẳng gánh lo đi và vui sống', 'Dale Carnegie', 'Phát triển bản thân', 1948, 'Hướng dẫn thực tế để loại bỏ lo lắng và sống một cuộc đời an yên và trọn vẹn hơn.', 'available'),
-(12, NULL, 'Đi tìm lẽ sống', 'Viktor E. Frankl', 'Tâm lý học', 1946, 'Chia sẻ trải nghiệm sống sót tại trại tập trung và tìm thấy ý nghĩa cuộc đời trong đau khổ.', 'available'),
-(13, NULL, 'Bài học diệu kỳ từ chiếc xe rác', 'David J. Pollay', 'Tư duy tích cực', 2010, 'Câu chuyện nhỏ giúp bạn buông bỏ giận dữ, sống nhẹ nhàng và tập trung vào điều tích cực.', 'available'),
-(14, NULL, 'Sống như người Nhật', 'Mari Fujimoto', 'Lối sống', 2018, 'Khám phá văn hóa, lối sống tối giản, cách ứng xử tinh tế của người Nhật.', 'available'),
-(15, NULL, 'Thiên thần nhỏ của tôi', 'Guillaume Musso', 'Tình cảm', 2007, 'Một câu chuyện đầy bí ẩn, lãng mạn và cảm động về tình phụ tử và ký ức.', 'available'),
-(16, NULL, 'Không gia đình', 'Hector Malot', 'Văn học cổ điển', 1878, 'Câu chuyện phiêu lưu của cậu bé Remi đi tìm gia đình giữa cuộc sống gian nan.', 'available'),
-(17, NULL, 'Thư gửi thanh xuân', 'Nhiều tác giả', 'Tản văn', 2020, 'Những dòng tâm sự về tuổi trẻ, tình bạn, tình yêu và giấc mơ dang dở.', 'available'),
-(18, NULL, 'Ngày xưa có một chuyện tình', 'Nguyễn Nhật Ánh', 'Văn học', 2016, 'Một câu chuyện tình nhẹ nhàng, sâu lắng, đầy xúc động về những rung động đầu đời.', 'available');
+INSERT INTO `books` (`id`, `images`, `title`, `author`, `category`, `publish_year`, `summary`, `status`) VALUES
+('GT_01', 'uploads/1747308867_the-lord-of-the-rings.png', 'The Lord of the Rings', 'J.R.R. Tolkien', 'GT', 1955, 'Frodo Baggins nhận nhiệm vụ tiêu hủy chiếc nhẫn quyền lực để cứu thế giới khỏi bóng tối.', 'available'),
+('GT_02', 'uploads/1747308897_the-hobbit.png', 'The Hobbit', 'J.R.R. Tolkien', 'GT', 1937, 'Bilbo Baggins, một hobbit bình thường, tham gia vào cuộc phiêu lưu tìm kho báu cùng nhóm người lùn.', 'available'),
+('KN_01', 'uploads/1747306239_bai-hoc-dieu-ky-tu-chiec-xe-rac.png', 'Bài Học Diệu Kỳ Từ Chiếc Xe Rác', 'David J. Pollay', 'KN', 2010, 'Khuyến khích con người bỏ qua những điều tiêu cực, học cách sống lạc quan và tích cực hơn.', 'available'),
+('KN_02', 'uploads/1747306557_quang-ganh-lo-di-va-vui-song.png', 'Quẳng Gánh Lo Đi Và Vui Sống (How to Stop Worrying and Start Living)', 'Dale Carnegie', 'KN', 1948, 'Cung cấp phương pháp và lời khuyên giúp con người giảm lo âu, sống vui vẻ và hiệu quả hơn.', 'available'),
+('KN_03', 'uploads/1747306776_tuoi-tre-dang-gia-bao-nhieu.png', 'Tuổi Trẻ Đáng Giá Bao Nhiêu?', 'Rosie Nguyễn', 'KN', 2016, 'Hướng dẫn người trẻ cách tận dụng thời gian, học hỏi, làm việc và sống trọn vẹn trong tuổi thanh xuân.', 'available'),
+('KN_04', 'uploads/1747310805_dac-nhan-tam.png', 'Đắc Nhân Tâm', 'Dale Carnegie', 'KN', 1936, 'Cuốn sách kinh điển về nghệ thuật giao tiếp và thuyết phục, giúp người đọc xây dựng mối quan hệ tốt đẹp trong công việc và cuộc sống.', 'available'),
+('KN_05', 'uploads/1747310843_dan-ong-sao-hoa-dan-ba-sao-kim.png', 'Đàn Ông Sao Hỏa, Đàn Bà Sao Kim', 'John Gray', 'KN', 1992, 'Giải thích sự khác biệt giữa nam và nữ trong tư duy và cảm xúc, từ đó cải thiện mối quan hệ tình cảm.', 'available'),
+('KN_06', 'uploads/1747310875_nghe-thuat-tap-trung.png', 'Nghệ Thuật Tập Trung', 'Cal Newport', 'KN', 2016, 'Khuyến khích người đọc rèn luyện khả năng tập trung sâu để đạt hiệu suất cao trong công việc.', 'available'),
+('KN_07', 'uploads/1747310975_doi-ngan-dung-ngu-dai.png', 'Đời Ngắn Đừng Ngủ Dài', 'Robin Sharma', 'KN', 2016, 'Những bài học và lời khuyên để sống một cuộc đời ý nghĩa và trọn vẹn.', 'available'),
+('KN_08', 'uploads/1747311080_ren-luyen-tu-duy-phan-bien.png', 'Rèn Luyện Tư Duy Phản Biện', 'Albert Rutherford', 'KN', 2018, 'Phát triển khả năng tư duy phản biện để đưa ra quyết định chính xác và logic.', 'available'),
+('KN_09', 'uploads/1747311116_tu-duy-nhanh-va-cham.png', 'Tư Duy Nhanh Và Chậm', 'Daniel Kahneman', 'KN', 2011, 'Phân tích hai hệ thống tư duy của con người và cách chúng ảnh hưởng đến quyết định.', 'available'),
+('KN_10', 'uploads/1747311145_phi-ly-tri.png', 'Phi Lý Trí', 'Dan Ariely', 'KN', 2008, 'Khám phá những hành vi phi lý trí trong cuộc sống hàng ngày và cách chúng ảnh hưởng đến quyết định của chúng ta.', 'available'),
+('KN_11', 'uploads/1747311177_im-lang-suc-manh-cua-nguoi-huong-noi.png', 'Im Lặng: Sức Mạnh Của Người Hướng Nội', 'Susan Cain', 'KN', 2012, 'Tôn vinh giá trị của người hướng nội trong một thế giới ưa chuộng sự hướng ngoại.', 'available'),
+('KN_12', 'uploads/1747311226_dam-bi-ghet.png', 'Dám Bị Ghét', 'Ichiro Kishimi & Fumitake Koga', 'KN', 2013, 'Giới thiệu triết lý của Alfred Adler về tự do và hạnh phúc.', 'available'),
+('KN_13', 'uploads/1747312127_suc-manh-cua-eq.png', 'Sức Mạnh Của EQ', 'Patrick King', 'KN', 2024, 'Cuốn sách nhấn mạnh rằng thành công trong cuộc sống phụ thuộc vào cách bạn đối xử với mọi người, và EQ là kỹ năng có thể rèn luyện được.', 'available'),
+('TK_01', 'uploads/1747306319_chien-binh-cau-vong.png', 'Chiến Binh Cầu Vồng (Laskar Pelangi)', 'Andrea Hirata', 'TK', 2005, 'Kể về 10 đứa trẻ nghèo vượt khó ở Indonesia và hành trình học tập, khát vọng vươn lên từ nghịch cảnh.', 'available'),
+('TK_02', 'uploads/1747313898_kien-hanh-va-dinh-kien.png', 'Kiêu Hãnh Và Định Kiến', ' Jane Austen', 'TK', 1813, 'Chuyện tình của Elizabeth và Darcy vượt qua những định kiến xã hội và bản thân.', 'available'),
+('TL_01', 'uploads/1747306378_di-tim-le-song.png', 'Đi Tìm Lẽ Sống (Man’s Search for Meaning)', 'Viktor E. Frankl', 'TL', 1946, 'Trải nghiệm của tác giả tại trại tập trung Đức Quốc xã và cách ông tìm ra ý nghĩa cuộc sống ngay cả trong đau khổ.', 'available'),
+('TL_02', 'uploads/1747306529_nha-gia-kim.png', 'Nhà Giả Kim (The Alchemist)', 'Paulo Coelho', 'TL', 1988, 'Hành trình của chàng chăn cừu Santiago đi tìm kho báu, khám phá bản thân và ý nghĩa cuộc sống.', 'available'),
+('TN_01', 'uploads/1747309140_joni-mat-tit-va-dong-bon-tinh-nghich.png', 'Joni Mặt Tịt và Đồng Bọn Tinh Nghịch', 'Nguyễn Khắc Cường', 'TN', 2023, 'Câu chuyện hài hước và nhân văn về chú mèo Joni và những người bạn, phản ánh đời sống thị dân hiện đại thông qua góc nhìn của loài vật.', 'available'),
+('VH_01', 'uploads/1747306408_khong-gia-dinh.png', 'Không Gia Đình (Sans Famille)', 'Hector Malot', 'VH', 1878, 'Cuộc hành trình của cậu bé Rémi đi khắp nước Pháp để tìm gia đình thật sự của mình.', 'available'),
+('VH_02', 'uploads/1747306436_lao-hac.png', 'Lão Hạc', 'Nam Cao', 'VH', 1943, 'Một ông lão nghèo, yêu thương con, chấp nhận đói khổ để giữ gìn phẩm giá và dành phần tốt đẹp cho con trai.', 'available'),
+('VH_03', 'uploads/1747306471_ngay-xua-co-mot-chyen-tinh.png', 'Ngày Xưa Có Một Chuyện Tình', 'Nguyễn Nhật Ánh', 'VH', 2016, 'Câu chuyện về mối tình tay ba trong sáng giữa những người bạn thân từ thời niên thiếu đến khi trưởng thành.', 'available'),
+('VH_04', 'uploads/1747306586_thien-than-nho-cua-toi.png', 'Thiên Thần Nhỏ Của Tôi', 'Nguyễn Nhật Ánh', 'VH', 2008, 'Chuyện tình dễ thương giữa cậu bé và cô bé hàng xóm – một thiên thần nhỏ trong cuộc đời cậu.', 'available'),
+('VH_05', 'uploads/1747306749_truyen-kieu.png', 'Truyện Kiều', 'Nguyễn Du', 'VH', 1820, 'Số phận thăng trầm của Thúy Kiều – một người con gái tài sắc nhưng gặp nhiều trắc trở trong tình yêu và cuộc đời.', 'available'),
+('VH_06', 'uploads/1747309018_cho-toi-xin-mot-ve-di-tuoi-tho.png', 'Cho Tôi Xin Một Vé Đi Tuổi Thơ', 'Nguyễn Nhật Ánh', 'VH', 2008, 'Khắc họa thế giới tuổi thơ hồn nhiên, trong sáng, với những trò nghịch ngợm và ước mơ giản dị, gợi nhớ về một thời tuổi thơ đã qua.', 'available'),
+('VH_07', 'uploads/1747309053_co-gai-den-tu-hom-qua.png', 'Cô Gái Đến Từ Hôm Qua', 'Nguyễn Nhật Ánh', 'VH', 1990, 'Kể về mối tình học trò ngây thơ giữa Thư và Việt An, đan xen giữa hiện tại và ký ức tuổi thơ, mang đến những cảm xúc nhẹ nhàng, sâu lắng.', 'available'),
+('VH_08', 'uploads/1747309087_toi-la-beto.png', 'Tôi Là Bêtô', 'Nguyễn Nhật Ánh', 'VH', 2007, 'Chuyện kể qua góc nhìn của chú chó Bêtô, phản ánh thế giới loài người với những niềm vui, nỗi buồn, và tình yêu thương chân thành.', 'available'),
+('VH_09', 'uploads/1747313675_ong-gia-va-bien-ca.png', 'Ông Già Và Biển Cả', 'Ernest Hemingway', 'VH', 1952, 'Câu chuyện về cuộc chiến kiên cường giữa lão chài Santiago và con cá kiếm khổng lồ.', 'available'),
+('VH_10', 'uploads/1747313823_tieng-chim-hot-trong-bui-man-gai.png', 'Tiếng Chim Hót Trong Bụi Mận Gai', 'Colleen McCullough', 'VH', 1977, 'Bi kịch tình yêu giữa một linh mục và cô gái trẻ trong bối cảnh nước Úc.', 'available'),
+('VH_11', 'uploads/1747313985_nhung-nguoi-khon-kho-chap1.png', 'Những Người Khốn Khổ', 'Victor Hugo', 'VH', 1862, 'Bi kịch và hy vọng trong cuộc đời Jean Valjean, phản ánh lòng trắc ẩn và công lý.', 'available'),
+('VH_12', 'uploads/1747314083_thang-gu-nha-tho-duc-ba.png', 'Thằng Gù Nhà Thờ Đức Bà', 'Victor Hugo', 'VH', 1831, 'Câu chuyện cảm động về tình yêu và nỗi đau của chàng gù Quasimodo.', 'available'),
+('VH_13', 'uploads/1747314125_toi-ac-va-hinh-phat.png', 'Tội Ác Và Hình Phạt', 'Fyodor Dostoyevsky', 'VH', 1866, 'Tâm lý phức tạp của một sinh viên giết người và hành trình chuộc lỗi.', 'available'),
+('VH_14', 'uploads/1747314169_anh-em-nha-karamazov.png', 'Anh Em Nhà Karamazov', 'Fyodor Dostoyevsky', 'VH', 1880, 'Tác phẩm triết học – văn học bàn về đạo đức, tự do, và niềm tin.', 'available'),
+('VH_15', 'uploads/1747314231_cuon-theo-chieu-gio.png', 'Cuốn Theo Chiều Gió', 'Margaret Mitchell', 'VH', 1936, 'Tình yêu và chiến tranh trong thời Nội chiến Mỹ, với nhân vật nữ mạnh mẽ Scarlett O’Hara.', 'available'),
+('VH_16', 'uploads/1747314283_cach-dong-bat-tan.png', 'Cánh Đồng Bất Tận', 'Nguyễn Ngọc Tư', 'VH', 2005, 'Truyện ngắn đặc sắc của văn học Việt Nam hiện đại về thân phận con người nơi miền Tây.', 'available'),
+('VH_17', 'uploads/1747314338_so-do.png', 'Số Đỏ', 'Vũ Trọng Phụng', 'VH', 1936, 'Tác phẩm trào phúng phản ánh xã hội thực dân nửa phong kiến.', 'available');
 
 -- --------------------------------------------------------
 
@@ -73,8 +92,7 @@ CREATE TABLE `loans` (
   `book_id` int(11) DEFAULT NULL,
   `student_id` varchar(20) DEFAULT NULL,
   `borrow_date` date DEFAULT NULL,
-  `return_date` date DEFAULT NULL,
-  `actual_return` date DEFAULT NULL
+  `return_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -98,7 +116,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`masv`, `username`, `password`, `email`, `role`, `created_at`) VALUES
 ('4151050139', 'Nguyễn Hồng Phong', '$2y$10$5UbClo0Gl46D2iS22w3XIeHFXjqne55KH/1jEwW3dj1XyYSDsZMMO', 'nguyenhongphong4151050139@gmail.com', 'user', '2025-05-13 22:47:49'),
-('4151050140', 'Nguyễn Thị Nở', '$2y$10$Oee3IUPwzScuKj5oxUa5H.S6wruVybGDsT7F3Ktn9q7AuURF7r/1e', 'newbierhp2000@gmail.com', 'admin', '2025-05-13 22:56:49');
+('4151050140', 'Nguyễn Thị Nở', '$2y$10$Oee3IUPwzScuKj5oxUa5H.S6wruVybGDsT7F3Ktn9q7AuURF7r/1e', 'newbierhp2000@gmail.com', 'admin', '2025-05-13 22:56:49'),
+('4651050264', 'Nguyễn Thị Hồng Thư', '$2y$10$398YHPgkNIDDV2QlyonwiurIMlbnIw/gmzZz2PfvCLYbDU4lwadje', 'karanguyen6605@gmail.com', 'user', '2025-05-13 23:13:22');
 
 --
 -- Indexes for dumped tables
@@ -108,7 +127,7 @@ INSERT INTO `users` (`masv`, `username`, `password`, `email`, `role`, `created_a
 -- Indexes for table `books`
 --
 ALTER TABLE `books`
-  ADD PRIMARY KEY (`stt`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `loans`
@@ -129,12 +148,6 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT for dumped tables
 --
-
---
--- AUTO_INCREMENT for table `books`
---
-ALTER TABLE `books`
-  MODIFY `stt` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `loans`
