@@ -293,6 +293,28 @@ footer {
   margin-left: 11px;
 }
 
+/*FORM EDIT BOOK*/
+.form-edit-book {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.container-edit-book {
+  width: 30%;
+  height: fit-content;
+  border-radius: 5px;
+  border: 3px solid rgb(116, 36, 36);
+  padding: 15px 0;
+}
+
+.container-edit-book img {
+  width: 100px;
+}
+
+.form-group-img {
+  margin-bottom: 30px;
+}
 
 /*----------------BODY REGISTER--------------------*/
 .register-body {

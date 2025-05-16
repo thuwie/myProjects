@@ -8,9 +8,8 @@ $success_message = '';
 
 // Xử lý request của GET
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-        $book_id = intval($_GET['id']);
-        
+    if (isset($_GET['id'])) {
+        $book_id = $_GET['id'];
         try {
             $stmt = $pdo->prepare("SELECT * FROM books WHERE id = ?");
             $stmt->execute([$book_id]);
@@ -29,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 // Xử lý request của POST
 elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $book_id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+    $book_id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     $images = filter_input(INPUT_POST, 'images', FILTER_SANITIZE_URL);
     $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
     $author = filter_input(INPUT_POST, 'author', FILTER_SANITIZE_STRING);
@@ -89,6 +88,7 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php include("../includes/nav.php"); ?>
 
 <main>
+    <link rel="stylesheet" href="../assets/styles.css">
     <h2>Chỉnh sửa thông tin sách</h2>
 
     <?php if ($error_message): ?>
@@ -100,46 +100,67 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
 
     <?php if ($book): ?>
-        <form action="books_edit.php?id=<?= htmlspecialchars($book['id']) ?>" method="POST" class="form-box">
-            <input type="hidden" name="id" value="<?= htmlspecialchars($book['id']) ?>">
+        <form action="books_edit.php?id=<?= htmlspecialchars($book['id']) ?>" method="POST" class="form-edit-book">
+            <div class="container-edit-book">
+                <div class="form-group-img">
+                    <label>Ảnh:</label><br>
+                    <img name="images" src="<?= htmlspecialchars($book['images']) ?>"><br><br>
+                     <button class="btn-change-img">Chọn để thay đổi ảnh</button>
+                    <input type ="file" class ="newImage" name ="newImage" hidden>
+                </div>
+                
+                <div class="information-edit-book">
+                    <div class="form-group-information">
+                        <label for="title">Tên sách:</label>
+                        <input type="text" id="title" name="title" 
+                        value="<?= htmlspecialchars($book['title']) ?>" required>
+                    </div>
+                    
+                    <div class="form-group-information">
+                        <label for="author">Tác giả:</label>
+                        <input type="text" id="author" name="author" 
+                        value="<?= htmlspecialchars($book['author']) ?>" required>
+                    </div>
 
-            <label>Link hình ảnh (URL):</label><br>
-            <input type="text" name="images" value="<?= htmlspecialchars($book['images']) ?>"><br><br>
-            
-            <label for="title">Tên sách:</label>
-            <input type="text" id="title" name="title" 
-                   value="<?= htmlspecialchars($book['title']) ?>" required>
+                    <div class="form-group-information">
+                        <label for="category">Thể loại:</label>
+                        <input type="text" id="category" name="category" 
+                        value="<?= htmlspecialchars($book['category']) ?>" required>
+                    </div>
 
-            <label for="author">Tác giả:</label>
-            <input type="text" id="author" name="author" 
-                   value="<?= htmlspecialchars($book['author']) ?>" required>
+                    <div class="form-group-information">
+                        <label for="publish_year">Năm xuất bản:</label>
+                        <input type="number" id="publish_year" name="publish_year" 
+                            min="1000" max="<?= date('Y') + 1 ?>" 
+                            value="<?= htmlspecialchars($book['publish_year']) ?>" required>
+                    </div>
 
-            <label for="category">Thể loại:</label>
-            <input type="text" id="category" name="category" 
-                   value="<?= htmlspecialchars($book['category']) ?>" required>
+                    <div class="form-group-information">
+                        <label>Tóm tắt:</label><br>
+                        <textarea name="summary" rows="4" cols="50"><?= htmlspecialchars($book['summary']) ?></textarea><br><br>
+                    </div>
 
-            <label for="publish_year">Năm xuất bản:</label>
-            <input type="number" id="publish_year" name="publish_year" 
-                   min="1000" max="<?= date('Y') + 1 ?>" 
-                   value="<?= htmlspecialchars($book['publish_year']) ?>" required>
+                    <div class="form-group-information">
+                        <label for="status">Trạng thái:</label>
+                        <select id="status" name="status" required>
+                            <option value="available" <?= $book['status'] === 'available' ? 'selected' : '' ?>>
+                                Sẵn sàng
+                            </option>
+                            <option value="borrowed" <?= $book['status'] === 'borrowed' ? 'selected' : '' ?>>
+                                Đã được mượn
+                            </option>
+                        </select>
+                    </div>
 
-            <label>Tóm tắt:</label><br>
-            <textarea name="summary" rows="4" cols="50"><?= htmlspecialchars($book['summary']) ?></textarea><br><br>
-                                   
-            <label for="status">Trạng thái:</label>
-            <select id="status" name="status" required>
-                <option value="available" <?= $book['status'] === 'available' ? 'selected' : '' ?>>
-                    Sẵn sàng
-                </option>
-                <option value="borrowed" <?= $book['status'] === 'borrowed' ? 'selected' : '' ?>>
-                    Đã mượn
-                </option>
-            </select>
-
-            <input type="submit" value="Cập nhật" class="btn">
-            <a href="books_list.php" class="btn" style="background-color: #aaa;">Hủy</a>
+                    <div class="form-group-information">
+                        <input type="submit" value="Cập nhật" class="btn">
+                        <a href="books_list.php" class="btn" style="background-color: #aaa;">Hủy</a>
+                    </div>
+                </div>
+            </div>
         </form>
     <?php endif; ?>
+    <script src ="../validation/action.js"></script>
 </main>
 
 <?php include("../includes/footer.php"); ?>
