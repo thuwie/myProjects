@@ -28,14 +28,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 // Xử lý request của POST
 elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $book_id = filter_input(INPUT_POST, 'id', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $images = filter_input(INPUT_POST, 'images', FILTER_SANITIZE_URL);
+    $book_id = $_GET['id'];
+    $images= ""; //Đang xư lý ảnh sau khi được chọn mới phải lấy được và lưu vào DB
     $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
     $author = filter_input(INPUT_POST, 'author', FILTER_SANITIZE_STRING);
     $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_STRING);
     $publish_year = filter_input(INPUT_POST, 'publish_year', FILTER_VALIDATE_INT);
     $summary = trim($_POST['summary'] ?? '');
+    $status = $_POST['status'];
 
+    //Tạo đường dẫn thư mục nơi chứa ảnh
+    $uploadDir = "uploads/"; // thư mục lưu ảnh
+    $fileName = time() . "_" . basename($_FILES["images"]["name"]);
+    $targetFile = $uploadDir . $fileName;
+
+    // Tạo thư mục nếu chưa tồn tại
+    if (!file_exists($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    };
+
+    // Di chuyển file từ temp (là đường dẫn tạm thời trên server) vào thư mục đích
+    if (move_uploaded_file($_FILES["images"]["tmp_name"], $targetFile)) {
+        // Lưu đường dẫn vào DB
+        $images = $targetFile;
+    };
     // Bước kiểm tra dữ liệu
     $errors = [];
     if (!$book_id) $errors[] = "Sách không hợp lệ.";
@@ -57,10 +73,8 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             if ($result) {
                 $success_message = "Cập nhật thông tin sách thành công!";
-                // Lấy dữ liệu đã cập nhật
-                $stmt = $pdo->prepare("SELECT * FROM books WHERE id = ?");
-                $stmt->execute([$book_id]);
-                $book = $stmt->fetch(PDO::FETCH_ASSOC);
+                header('Location: ./books_list.php');
+                exit;
             } else {
                 $error_message = "Không thể cập nhật thông tin sách.";
             }
@@ -100,12 +114,14 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php endif; ?>
 
     <?php if ($book): ?>
-        <form action="books_edit.php?id=<?= htmlspecialchars($book['id']) ?>" method="POST" class="form-edit-book">
+        <form class="form-edit-book" action="books_edit.php?id=<?= htmlspecialchars($book['id']) ?>" 
+            method="POST" enctype="multipart/form-data">
+
             <div class="container-edit-book">
                 <div class="form-group-img">
                     <label>Ảnh:</label><br>
-                    <img name="images" src="<?= htmlspecialchars($book['images']) ?>"><br><br>
-                     <button class="btn-change-img">Chọn để thay đổi ảnh</button>
+                    <img class ="images" name="images" src="<?= htmlspecialchars($book['images']) ?>"><br><br>
+                    <button type ="button" class="btn-change-img">Chọn để thay đổi ảnh</button>
                     <input type ="file" class ="newImage" name ="newImage" hidden>
                 </div>
                 

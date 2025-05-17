@@ -21,7 +21,6 @@ const validation = function(selector) {
 
     Array.from(inputs).forEach(input => {
         var rule = input.getAttribute('rules');
-        console.log( typeof rule);
         
         if(rule.includes('|')) {
             rule = rule.split("|");
