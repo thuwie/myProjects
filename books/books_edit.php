@@ -1,6 +1,7 @@
 <?php
 require_once '../middleware/auth.php';
 require_once '../database/db.php';
+require_once '../helpers/normalization.php';
 
 $book = null;
 $error_message = '';
@@ -29,29 +30,72 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 // Xử lý request của POST
 elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $book_id = $_GET['id'];
-    $images= ""; //Đang xư lý ảnh sau khi được chọn mới phải lấy được và lưu vào DB
+    $images= ""; 
     $title = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_STRING);
     $author = filter_input(INPUT_POST, 'author', FILTER_SANITIZE_STRING);
     $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_STRING);
     $publish_year = filter_input(INPUT_POST, 'publish_year', FILTER_VALIDATE_INT);
     $summary = trim($_POST['summary'] ?? '');
     $status = $_POST['status'];
+    $fieldsToUpdate = [];
+    $params = [];
 
     //Tạo đường dẫn thư mục nơi chứa ảnh
     $uploadDir = "uploads/"; // thư mục lưu ảnh
-    $fileName = time() . "_" . basename($_FILES["images"]["name"]);
+    $fileName = time() . "_" . basename($_FILES["newImage"]["name"]);
     $targetFile = $uploadDir . $fileName;
+
+    $fields = ['images', 'title', 'author', 'category', 'publish_year', 'summary', 'status'];
+    $valuesFromClient = [$targetFile, $title, $author, $category, $publish_year, $summary, $status];
+    $clientData = array_combine($fields, $valuesFromClient);
+    $comma = "";
+    
+    //Select book được chọn để update
+    $stmt = $pdo->prepare("SELECT * FROM books WHERE id = ?");
+    $stmt->execute([$book_id]);
+    $dbBook = $stmt->fetch(PDO::FETCH_ASSOC);
 
     // Tạo thư mục nếu chưa tồn tại
     if (!file_exists($uploadDir)) {
         mkdir($uploadDir, 0777, true);
     };
 
-    // Di chuyển file từ temp (là đường dẫn tạm thời trên server) vào thư mục đích
-    if (move_uploaded_file($_FILES["images"]["tmp_name"], $targetFile)) {
-        // Lưu đường dẫn vào DB
-        $images = $targetFile;
+    //TÌm ra những fields cần cập nhật trên phía client
+   foreach ($clientData as $key => $value) {
+        if($key == array_key_last($clientData) && count($fieldsToUpdate) < count($clientData))
+        {
+            $lastKey = array_key_last($fieldsToUpdate); //Tìm last key
+            $lastItem = $fieldsToUpdate[$lastKey]; //Tìm last item
+            $pos = strpos($lastItem, ","); //Kiểm tra xem phần tử cuối có chứa dấu , không
+            if($pos) {
+                  $newItem = str_replace(',', '', $lastItem);
+                  $fieldsToUpdate[$lastKey] = $newItem;
+            }; 
+        } else {
+             $comma = ", ";
+        };
+        if (!empty($value) && normalize_input($value) !== normalize_input($dbBook[$key])) {
+            if($key == array_key_last($clientData)) {
+                $comma = "" . " where id = ?";
+            };  
+
+            $fieldsToUpdate[] = $key . " = ?" .  $comma ;
+            $params[] = $value;
+            if ($key !== array_key_last($clientData)) {
+                $params[] = $book_id;
+            };
+        };
     };
+    
+     if(strpos($fieldsToUpdate[0], 'images')) {
+        // Di chuyển file từ temp (là đường dẫn tạm thời trên server) vào thư mục đích
+        if (move_uploaded_file($_FILES["newImage"]["tmp_name"], $targetFile)) {
+            // Lưu đường dẫn vào DB
+            $images = $targetFile;
+        };
+    }; 
+
+    
     // Bước kiểm tra dữ liệu
     $errors = [];
     if (!$book_id) $errors[] = "Sách không hợp lệ.";
@@ -63,13 +107,16 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     if (!in_array($status, ['available', 'borrowed'])) {
         $errors[] = "Trạng thái không hợp lệ.";
-    }
+    };
 
-    if (empty($errors)) {
+
+    if (empty($errors) && !empty($fieldsToUpdate)) {
         try {
-            $stmt = $pdo->prepare("UPDATE books SET images = ?, title = ?, author = ?, category = ?, 
-                                 publish_year = ?, summary = ?, status = ? WHERE id = ?");
-            $result = $stmt->execute([$images, $title, $author, $category, $publish_year, $summary, $status, $book_id]);
+            $sql =  "UPDATE books SET " . implode('', $fieldsToUpdate);
+            echo $sql;
+            print_r ($params);
+            $stmt = $pdo->prepare($sql);
+            $result = $stmt->execute($params);
             
             if ($result) {
                 $success_message = "Cập nhật thông tin sách thành công!";
@@ -94,7 +141,7 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'summary' => $summary,
             'status' => $status
         ];
-    }
+    };
 }
 ?>
 
@@ -102,6 +149,7 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php include("../includes/nav.php"); ?>
 
 <main>
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="../assets/styles.css">
     <h2>Chỉnh sửa thông tin sách</h2>
 
@@ -120,7 +168,7 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="container-edit-book">
                 <div class="form-group-img">
                     <label>Ảnh:</label><br>
-                    <img class ="images" name="images" src="<?= htmlspecialchars($book['images']) ?>"><br><br>
+                    <img class ="images" name="image" src="<?= htmlspecialchars($book['images']) ?>"><br><br>
                     <button type ="button" class="btn-change-img">Chọn để thay đổi ảnh</button>
                     <input type ="file" class ="newImage" name ="newImage" hidden>
                 </div>
