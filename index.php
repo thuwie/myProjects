@@ -65,7 +65,7 @@
         </li>
         <ul class="history-submenu" style="display: none; padding-left: 20px;">
           <li><a href="#"><i class="fas fa-check"></i> Đã trả</a></li>
-          <li><a href="users/user_borrowed.php"><i class="fas fa-book"></i> Đang mượn</a></li>
+          <li><a href="#"><i class="fas fa-book"></i> Đang mượn</a></li>
         </ul>
         <li class="logout-btn" style="margin-top: 30px; border-top: 1px solid #ccc; padding-top: 15px;">
           <a href="logout.php"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
@@ -92,7 +92,7 @@
     <ul>
       <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
       <li><a href="books/books_list.php">Quản Lý Sách</a></li>
-      <li><a href="readers/readers_list.php">Quản Lý Đọc Giả</a></li>
+      <li><a href="users/user_list.php">Quản Lý Đọc Giả</a></li>
       <li><a href="loans/loans_borrow.php">Mượn / Trả Sách</a></li>
       <li><a href="logout.php">Đăng Xuất</a></li>
       <?php endif; ?>

@@ -124,7 +124,7 @@ try {
         <tr>
           <th>STT</th>
           <th>Tên sách</th>
-          <th>Độc giả</th>
+          <th>Đọc giả</th>
           <th>Ngày mượn</th>
           <th>Hạn trả</th>
           <th>Thao tác</th>
