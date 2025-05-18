@@ -10,55 +10,70 @@ $success_message = '';
 $books = [];
 $readers = [];
 try {
-    $stmt = $pdo->query("SELECT id, title FROM books WHERE status = 'available' ORDER BY title");
+    $stmt = $pdo->query("SELECT id, title FROM books WHERE status = 'available' ORDER BY id");
     $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $stmt = $pdo->query("SELECT student_id, name FROM readers ORDER BY name");
+    $stmt = $pdo->query("SELECT masv AS student_id, username AS name FROM users WHERE role = 'user' ORDER BY username");
     $readers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     $error_message = "Lỗi truy vấn: " . $e->getMessage();
 }
 
 // Xử lý mượn sách
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['borrow_submit'])) {
-    $book_id = $_POST['book_id'] ?? '';
-    $student_id = $_POST['student_id'] ?? '';
-    $borrow_date = $_POST['borrow_date'] ?? date('Y-m-d');
-    $return_date = $_POST['return_date'] ?? '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $book_id = $_POST['book_id'] ?? '';
+  $student_id = $_POST['student_id'] ?? '';
+  $borrow_date = $_POST['borrow_date'] ?? date('Y-m-d');
+  $return_date = $_POST['return_date'] ?? '';
+  $approved_at = $_POST['approved_at'] ?? '';
+  $approved_by = $_POST['approved_by'] ?? '';
 
-    $errors = [];
-    if (empty($book_id)) $errors[] = "Chưa chọn sách.";
-    if (empty($student_id)) $errors[] = "Chưa chọn độc giả.";
-    if (empty($borrow_date)) $errors[] = "Chưa nhập ngày mượn.";
-    if (empty($return_date)) $errors[] = "Chưa nhập hạn trả.";
+  $errors = [];
+  if (empty($book_id)) $errors[] = "Chưa chọn sách.";
+  if (empty($student_id)) $errors[] = "Chưa chọn độc giả.";
+  if (empty($borrow_date)) $errors[] = "Chưa nhập ngày mượn.";
+  if (empty($return_date)) $errors[] = "Chưa nhập hạn trả.";
 
-    if (empty($errors)) {
-        try {
-            $pdo->beginTransaction();
-            $stmt = $pdo->prepare("INSERT INTO loans (book_id, student_id, borrow_date, return_date) VALUES (?, ?, ?, ?)");
-            $stmt->execute([$book_id, $student_id, $borrow_date, $return_date]);
-            $stmt = $pdo->prepare("UPDATE books SET status = 'borrowed' WHERE id = ?");
-            $stmt->execute([$book_id]);
-            $pdo->commit();
-            $success_message = "Tạo phiếu mượn thành công!";
-            // Làm mới danh sách sách
-            $stmt = $pdo->query("SELECT id, title FROM books WHERE status = 'available' ORDER BY title");
-            $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            $pdo->rollBack();
-            $error_message = "Lỗi khi mượn sách: " . $e->getMessage();
-        }
-    } else {
-        $error_message = implode("<br>", $errors);
+  if (empty($errors)) {
+    try {
+      $pdo->beginTransaction();
+
+      // Phân biệt form mượn từ xa hay mượn trực tiếp
+      $status = isset($_POST['borrow_submit']) ? 'approved' : 'pending';
+
+      $stmt = $pdo->prepare("INSERT INTO loans (book_id, student_id, borrow_date, return_date, status, approved_at, approved_by) VALUES (?, ?, ?, ?, ?, ?, ?)");
+      $stmt->execute([$book_id, $student_id, $borrow_date, $return_date, $status, $approved_at, $approved_by]);
+
+      $pdo->commit();
+
+      // Nếu từ form mượn tại thư viện
+      if ($status === 'approved') {
+        // Nếu là mượn trực tiếp
+        $success_message = "Tạo phiếu mượn thành công (đã duyệt ngay).";
+      } else {
+        // Nếu từ form mượn từ xa
+        echo "<script>
+          alert('✅ Đã xác nhận mượn sách, chờ admin duyệt!');
+          window.location.href = '../index.php';
+        </script>";
+        exit;
+      }
+    } catch (PDOException $e) {
+      $pdo->rollBack();
+      $error_message = "Lỗi khi mượn sách: " . $e->getMessage();
     }
+  } else {
+    $error_message = implode("<br>", $errors);
+  }
 }
 
 // Lấy danh sách phiếu mượn
 $loans = [];
 try {
-    $sql = "SELECT l.id, b.title, r.name AS reader_name, l.borrow_date, l.return_date, l.actual_return
+    $sql = "SELECT l.id, b.title, u.username AS reader_name, l.borrow_date, l.return_date, l.status
             FROM loans l
             JOIN books b ON l.book_id = b.id
-            JOIN readers r ON l.student_id = r.student_id
+            JOIN users u ON l.student_id = u.masv
+            WHERE l.status = 'pending'
             ORDER BY l.borrow_date DESC";
     $stmt = $pdo->query($sql);
     $loans = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -102,17 +117,16 @@ try {
     <input type="submit" name="borrow_submit" value="Lưu phiếu mượn" class="btn">
   </form>
 
-  <h2>Danh sách phiếu mượn</h2>
+  <h2>Danh sách phiếu mượn chờ duyệt</h2>
   <?php if (!empty($loans)): ?>
     <table>
       <thead>
         <tr>
-          <th>ID</th>
+          <th>STT</th>
           <th>Tên sách</th>
           <th>Độc giả</th>
           <th>Ngày mượn</th>
           <th>Hạn trả</th>
-          <th>Ngày trả thực tế</th>
           <th>Thao tác</th>
         </tr>
       </thead>
@@ -124,10 +138,11 @@ try {
           <td><?= htmlspecialchars($loan['reader_name']) ?></td>
           <td><?= htmlspecialchars($loan['borrow_date']) ?></td>
           <td><?= htmlspecialchars($loan['return_date']) ?></td>
-          <td><?= $loan['actual_return'] ? htmlspecialchars($loan['actual_return']) : '<span style="color:red">Chưa trả</span>' ?></td>
           <td>
-            <?php if (!$loan['actual_return']): ?>
-              <a href="loans_return.php?id=<?= $loan['id'] ?>" class="btn btn-small">Trả sách</a>
+            <?php if ($loan['status'] === 'pending'): ?>
+              <a href="loans_approve.php?id=<?= htmlspecialchars($loan['id']) ?>" onclick="return confirm('Bạn có muốn duyệt phiếu này không?')">Duyệt</a>
+            <?php else: ?>
+              <span style="color:green">Đã duyệt</span>
             <?php endif; ?>
           </td>
         </tr>
@@ -135,7 +150,7 @@ try {
       </tbody>
     </table>
   <?php else: ?>
-    <p>Chưa có phiếu mượn nào.</p>
+    <p>Không có phiếu mượn nào đang chờ duyệt.</p>
   <?php endif; ?>
 </main>
 <?php include("../includes/footer.php"); ?>

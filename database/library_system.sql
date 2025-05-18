@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 15, 2025 at 07:43 PM
+-- Generation Time: May 18, 2025 at 11:01 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -43,7 +43,7 @@ CREATE TABLE `books` (
 --
 
 INSERT INTO `books` (`id`, `images`, `title`, `author`, `category`, `publish_year`, `summary`, `status`) VALUES
-('GT_01', 'uploads/1747308867_the-lord-of-the-rings.png', 'The Lord of the Rings', 'J.R.R. Tolkien', 'GT', 1955, 'Frodo Baggins nhận nhiệm vụ tiêu hủy chiếc nhẫn quyền lực để cứu thế giới khỏi bóng tối.', 'available'),
+('GT_01', 'uploads/1747308867_the-lord-of-the-rings.png', 'The Lord of the Rings', 'J.R.R. Tolkien', 'GT', 1955, 'Frodo Baggins nhận nhiệm vụ tiêu hủy chiếc nhẫn quyền lực để cứu thế giới khỏi bóng tối.', 'borrowed'),
 ('GT_02', 'uploads/1747308897_the-hobbit.png', 'The Hobbit', 'J.R.R. Tolkien', 'GT', 1937, 'Bilbo Baggins, một hobbit bình thường, tham gia vào cuộc phiêu lưu tìm kho báu cùng nhóm người lùn.', 'available'),
 ('KN_01', 'uploads/1747306239_bai-hoc-dieu-ky-tu-chiec-xe-rac.png', 'Bài Học Diệu Kỳ Từ Chiếc Xe Rác', 'David J. Pollay', 'KN', 2010, 'Khuyến khích con người bỏ qua những điều tiêu cực, học cách sống lạc quan và tích cực hơn.', 'available'),
 ('KN_02', 'uploads/1747306557_quang-ganh-lo-di-va-vui-song.png', 'Quẳng Gánh Lo Đi Và Vui Sống (How to Stop Worrying and Start Living)', 'Dale Carnegie', 'KN', 1948, 'Cung cấp phương pháp và lời khuyên giúp con người giảm lo âu, sống vui vẻ và hiệu quả hơn.', 'available'),
@@ -58,6 +58,7 @@ INSERT INTO `books` (`id`, `images`, `title`, `author`, `category`, `publish_yea
 ('KN_11', 'uploads/1747311177_im-lang-suc-manh-cua-nguoi-huong-noi.png', 'Im Lặng: Sức Mạnh Của Người Hướng Nội', 'Susan Cain', 'KN', 2012, 'Tôn vinh giá trị của người hướng nội trong một thế giới ưa chuộng sự hướng ngoại.', 'available'),
 ('KN_12', 'uploads/1747311226_dam-bi-ghet.png', 'Dám Bị Ghét', 'Ichiro Kishimi & Fumitake Koga', 'KN', 2013, 'Giới thiệu triết lý của Alfred Adler về tự do và hạnh phúc.', 'available'),
 ('KN_13', 'uploads/1747312127_suc-manh-cua-eq.png', 'Sức Mạnh Của EQ', 'Patrick King', 'KN', 2024, 'Cuốn sách nhấn mạnh rằng thành công trong cuộc sống phụ thuộc vào cách bạn đối xử với mọi người, và EQ là kỹ năng có thể rèn luyện được.', 'available'),
+('TH_01', 'uploads/1747325484_ban-ve-tu-do.png', 'Bàn Về Tự Do (On Liberty)', 'John Stuart Mill', 'TH', 1859, 'Nền tảng của tư tưởng tự do hiện đại, bảo vệ quyền tự do cá nhân.', 'available'),
 ('TH_02', 'uploads/1747325522_homodeus-luoc-su-tuong-lai.png', 'Homo Deus – Lược Sử Tương Lai', 'Yuval Noah Harari', 'TH', 2015, 'Dự đoán tương lai con người từ góc nhìn triết học và công nghệ. |', 'available'),
 ('TH_03', 'uploads/1747325548_sapiens-luoc-su-loai-nguoi.png', 'Sapiens – Lược Sử Loài Người', 'Yuval Noah Harari', 'TH', 2011, 'Phân tích sự phát triển của nhân loại với góc nhìn lịch sử – triết học. |', 'available'),
 ('TH_04', 'uploads/1747325570_su-an-ui-cua-triet-hoc.png', 'Sự An Ủi Của Triết Học', 'Alain de Botton', 'TH', 2000, 'Dẫn dắt triết học ứng dụng giúp con người vượt qua đau khổ. |', 'available'),
@@ -106,11 +107,21 @@ INSERT INTO `books` (`id`, `images`, `title`, `author`, `category`, `publish_yea
 
 CREATE TABLE `loans` (
   `id` int(11) NOT NULL,
-  `book_id` int(11) DEFAULT NULL,
+  `book_id` varchar(11) DEFAULT NULL,
   `student_id` varchar(20) DEFAULT NULL,
   `borrow_date` date DEFAULT NULL,
-  `return_date` date DEFAULT NULL
+  `return_date` date DEFAULT NULL,
+  `status` enum('pending','approved') DEFAULT 'pending',
+  `approved_at` datetime DEFAULT NULL,
+  `approved_by` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `loans`
+--
+
+INSERT INTO `loans` (`id`, `book_id`, `student_id`, `borrow_date`, `return_date`, `status`, `approved_at`, `approved_by`) VALUES
+(1, 'GT_01', '4651050264', '2025-05-16', '2025-05-20', 'approved', '2025-05-17 02:25:36', 'Nguyễn Thị Nở');
 
 -- --------------------------------------------------------
 
@@ -170,7 +181,18 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `loans`
 --
 ALTER TABLE `loans`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `loans`
+--
+ALTER TABLE `loans`
+  ADD CONSTRAINT `fk_loans_book` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`),
+  ADD CONSTRAINT `fk_loans_user` FOREIGN KEY (`student_id`) REFERENCES `users` (`masv`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

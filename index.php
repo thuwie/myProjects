@@ -12,7 +12,7 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Trang chủ - Quản lý thư viện</title>
+  <title>Thư viện UniBooks</title>
   <link rel="stylesheet" href="assets/styles.css">
   <link rel="stylesheet" href="assets/more.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
@@ -56,23 +56,22 @@
   <div id="overlay" class="overlay" onclick="toggleSidebar()"></div>
   <!-- SIDEBAR (chỉ hiện nếu là user) -->
   <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'user'): ?>
-  <div id="sidebar" class="sidebar">
-    <button class="close-btn" onclick="toggleSidebar()">×</button>
-    <ul class="sidebar-menu">
-      <li><a href="#"><i class="fas fa-home"></i> Trang chủ</a></li>
-      <li class="history-toggle" style="cursor: pointer;">
-        <i class="fas fa-history"></i> Xem lịch sử mượn sách
-      </li>
-      <ul class="history-submenu" style="display: none; padding-left: 20px;">
-        <li><a href="#"><i class="fas fa-check"></i> Đã trả</a></li>
-        <li><a href="#"><i class="fas fa-book"></i> Đang mượn</a></li>
+    <div id="sidebar" class="sidebar">
+      <button class="close-btn" onclick="toggleSidebar()">×</button>
+      <ul class="sidebar-menu">
+        <li><a href="#"><i class="fas fa-home"></i> Trang chủ</a></li>
+        <li class="history-toggle" style="cursor: pointer;">
+          <i class="fas fa-history"></i> Xem lịch sử mượn sách
+        </li>
+        <ul class="history-submenu" style="display: none; padding-left: 20px;">
+          <li><a href="#"><i class="fas fa-check"></i> Đã trả</a></li>
+          <li><a href="users/user_borrowed.php"><i class="fas fa-book"></i> Đang mượn</a></li>
+        </ul>
+        <li class="logout-btn" style="margin-top: 30px; border-top: 1px solid #ccc; padding-top: 15px;">
+          <a href="logout.php"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+        </li>
       </ul>
-      <li class="logout-btn" style="margin-top: 30px; border-top: 1px solid #ccc; padding-top: 15px;">
-        <a href="logout.php"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
-      </li>
-    </ul>
-  </div>
-
+    </div>
   <!-- Nút mở sidebar -->
   <button class="open-sidebar-btn" onclick="toggleSidebar()">☰</button>
   <?php endif; ?>
@@ -239,7 +238,7 @@
       });
     </script>
   <?php else: ?>
-    <p>Chào mừng đến với hệ thống quản lý thư viện. Vui lòng đăng nhập để sử dụng các chức năng.</p>
+    <p>Chào mừng đến với hệ thống thư viện. Vui lòng đăng nhập để sử dụng các chức năng.</p>
   <?php endif; ?>
 </main>
 
