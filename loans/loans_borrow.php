@@ -70,11 +70,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $loans = [];
 try {
     $sql = "SELECT l.id, b.title, u.username AS reader_name, l.borrow_date, l.return_date, l.status
-            FROM loans l
-            JOIN books b ON l.book_id = b.id
-            JOIN users u ON l.student_id = u.masv
-            WHERE l.status = 'pending'
-            ORDER BY l.borrow_date DESC";
+        FROM loans l
+        JOIN books b ON l.book_id = b.id
+        JOIN users u ON l.student_id = u.masv
+        WHERE l.status IN ('pending', 'approved')
+        ORDER BY l.borrow_date DESC";
     $stmt = $pdo->query($sql);
     $loans = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
@@ -117,7 +117,7 @@ try {
     <input type="submit" name="borrow_submit" value="Lưu phiếu mượn" class="btn">
   </form>
 
-  <h2>Danh sách phiếu mượn chờ duyệt</h2>
+  <h2>Danh Sách Phiếu Mượn:</h2>
   <?php if (!empty($loans)): ?>
     <table>
       <thead>
@@ -141,8 +141,10 @@ try {
           <td>
             <?php if ($loan['status'] === 'pending'): ?>
               <a href="loans_approve.php?id=<?= htmlspecialchars($loan['id']) ?>" onclick="return confirm('Bạn có muốn duyệt phiếu này không?')">Duyệt</a>
+            <?php elseif ($loan['status'] === 'approved'): ?>
+              <a href="loans_return.php?id=<?= htmlspecialchars($loan['id']) ?>" onclick="return confirm('Bạn có chắc muốn trả sách này không?')">Trả sách</a>
             <?php else: ?>
-              <span style="color:green">Đã duyệt</span>
+              <span style="color:gray">Đã trả</span>
             <?php endif; ?>
           </td>
         </tr>
