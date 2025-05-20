@@ -37,18 +37,11 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $publish_year = filter_input(INPUT_POST, 'publish_year', FILTER_VALIDATE_INT);
     $summary = trim($_POST['summary'] ?? '');
     $status = $_POST['status'];
-    $fieldsToUpdate = [];
-    $params = [];
 
     //Tạo đường dẫn thư mục nơi chứa ảnh
     $uploadDir = "uploads/"; // thư mục lưu ảnh
     $fileName = time() . "_" . basename($_FILES["newImage"]["name"]);
     $targetFile = $uploadDir . $fileName;
-
-    $fields = ['images', 'title', 'author', 'category', 'publish_year', 'summary', 'status'];
-    $valuesFromClient = [$targetFile, $title, $author, $category, $publish_year, $summary, $status];
-    $clientData = array_combine($fields, $valuesFromClient);
-    $comma = "";
     
     //Select book được chọn để update
     $stmt = $pdo->prepare("SELECT * FROM books WHERE id = ?");
@@ -60,40 +53,15 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
         mkdir($uploadDir, 0777, true);
     };
 
-    //TÌm ra những fields cần cập nhật trên phía client
-   foreach ($clientData as $key => $value) {
-        if($key == array_key_last($clientData) && count($fieldsToUpdate) < count($clientData))
-        {
-            $lastKey = array_key_last($fieldsToUpdate); //Tìm last key
-            $lastItem = $fieldsToUpdate[$lastKey]; //Tìm last item
-            $pos = strpos($lastItem, ","); //Kiểm tra xem phần tử cuối có chứa dấu , không
-            if($pos) {
-                  $newItem = str_replace(',', '', $lastItem);
-                  $fieldsToUpdate[$lastKey] = $newItem;
-            }; 
-        } else {
-             $comma = ", ";
-        };
-        if (!empty($value) && normalize_input($value) !== normalize_input($dbBook[$key])) {
-            if($key == array_key_last($clientData)) {
-                $comma = "" . " where id = ?";
-            };  
-
-            $fieldsToUpdate[] = $key . " = ?" .  $comma ;
-            $params[] = $value;
-            if ($key !== array_key_last($clientData)) {
-                $params[] = $book_id;
-            };
-        };
-    };
-    
-     if(strpos($fieldsToUpdate[0], 'images')) {
+    if(!empty($_FILES["newImage"]["name"])) {
         // Di chuyển file từ temp (là đường dẫn tạm thời trên server) vào thư mục đích
-        if (move_uploaded_file($_FILES["newImage"]["tmp_name"], $targetFile)) {
+         if (move_uploaded_file($_FILES["newImage"]["tmp_name"], $targetFile)) {
             // Lưu đường dẫn vào DB
             $images = $targetFile;
         };
-    }; 
+    } else {
+         $images =  $dbBook['images'];
+    };
 
     
     // Bước kiểm tra dữ liệu
@@ -110,13 +78,29 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     };
 
 
-    if (empty($errors) && !empty($fieldsToUpdate)) {
+    if (empty($errors)) {
         try {
-            $sql =  "UPDATE books SET " . implode('', $fieldsToUpdate);
-            echo $sql;
-            print_r ($params);
+            $sql = "UPDATE books SET 
+                                images = :images,
+                                title = :title,
+                                author = :author,
+                                category = :category,
+                                publish_year = :publish_year,
+                                summary = :summary,
+                                status = :status
+                            WHERE id = :id";
+
             $stmt = $pdo->prepare($sql);
-            $result = $stmt->execute($params);
+            $result = $stmt->execute([
+                                    ':images' => $images,
+                                    ':title' => $title,
+                                    ':author' => $author,
+                                    ':category' => $category,
+                                    ':publish_year' => $publish_year,
+                                    ':summary' => $summary,
+                                    ':status' => $status,
+                                    ':id' => $book_id,  
+                                ]);
             
             if ($result) {
                 $success_message = "Cập nhật thông tin sách thành công!";
@@ -142,7 +126,7 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'status' => $status
         ];
     };
-}
+};  
 ?>
 
 <?php include("../includes/header.php"); ?>
