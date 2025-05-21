@@ -108,8 +108,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <option value="VH">Sách văn học</option>
                     <option value="TH">Sách triết học</option>
                     <option value="TL">Sách tâm lý</option>
-                    <option value="TR">Sách trinh thám - hình sự</option>
-                    <option value="GT">Sách giả tưởng</option>
                     <option value="KHVT">Sách khoa học viễn tưởng</option>
                     <option value="TN">Sách thiếu nhi</option>
                 </select>
