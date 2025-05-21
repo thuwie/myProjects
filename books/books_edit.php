@@ -172,8 +172,17 @@ elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div class="form-group-information">
                         <label for="category">Thể loại:</label>
-                        <input type="text" id="category" name="category" 
-                        value="<?= htmlspecialchars($book['category']) ?>" required>
+                        <select name="category" id="category" required>
+                            <option value="TK" <?= $book['category'] === 'TK' ? 'selected' : '' ?>>Sách tham khảo</option>
+                            <option value="KN" <?= $book['category'] === 'KN' ? 'selected' : '' ?>>Sách kỹ năng sống</option>
+                            <option value="VH" <?= $book['category'] === 'VH' ? 'selected' : '' ?>>Sách văn học</option>
+                            <option value="TH" <?= $book['category'] === 'TH' ? 'selected' : '' ?>>Sách triết học</option>
+                            <option value="TL" <?= $book['category'] === 'TL' ? 'selected' : '' ?>>Sách tâm lý</option>
+                            <option value="TR" <?= $book['category'] === 'TR' ? 'selected' : '' ?>>Sách trinh thám - hình sự</option>
+                            <option value="GT" <?= $book['category'] === 'GT' ? 'selected' : '' ?>>Sách giả tưởng</option>
+                            <option value="KHVT" <?= $book['category'] === 'KHVT' ? 'selected' : '' ?>>Sách khoa học viễn tưởng</option>
+                            <option value="TN" <?= $book['category'] === 'TN' ? 'selected' : '' ?>>Sách thiếu nhi</option>
+                        </select>
                     </div>
 
                     <div class="form-group-information">
