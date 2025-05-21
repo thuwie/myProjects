@@ -112,53 +112,24 @@
     ?>
 
     <?php if (count($books) > 0): ?>
-      <table border="1" cellspacing="0" cellpadding="8" style="margin: auto;">
-        <tr>
-          <th>STT</th>
-          <th>Hình ảnh</th>
-          <th>Tiêu đề</th>
-          <th>Tác giả</th>
-          <th>Thể loại</th>
-          <th>Tóm tắt</th>
-          <th>Trạng thái</th>
-          <th>Thao tác</th>
-        </tr>
-        <?php foreach ($books as $book): ?>
-          <tr data-book-id="<?= $book['id'] ?>">
-            <td><?php echo htmlspecialchars($book['id']); ?></td>
-            <td>
+        <div class="book-list">
+          <?php foreach ($books as $book): ?>
+            <a href="./books/book_detail.php?id=<?= $book['id'] ?>" class="book-card">
               <?php if (!empty($book['images'])): ?>
-                <img src="<?= htmlspecialchars($book['images']) ?>" alt="Ảnh bìa" width="60">
+                <img src="books/<?= htmlspecialchars($book['images']) ?>" 
+                    alt="Ảnh bìa" 
+                    class="book-image">
               <?php else: ?>
-                Không có
+                <div class="book-placeholder">Không có ảnh</div>
               <?php endif; ?>
-            </td>
-            <td><?= htmlspecialchars($book['title']); ?></td>
-            <td><?= htmlspecialchars($book['author']); ?></td>
-            <td><?= htmlspecialchars($book['category']); ?></td>
-            <td><?= htmlspecialchars($book['summary']) ?></td>
-            <td><?= ($book['status'] === 'available') ? 'Sẵn sàng' : 'Đã mượn' ?></td>
-            <td>
-              <?php if ($book['status'] === 'available'): ?>
-                <button 
-                  onclick="openBorrowForm(this)"
-                  data-id="<?= $book['id'] ?>"
-                  data-title="<?= htmlspecialchars($book['title'], ENT_QUOTES) ?>"
-                  data-author="<?= htmlspecialchars($book['author'], ENT_QUOTES) ?>"
-                  data-category="<?= htmlspecialchars($book['category'], ENT_QUOTES) ?>"
-                  data-summary="<?= htmlspecialchars($book['summary'], ENT_QUOTES) ?>"
-                  data-status="<?= $book['status'] ?>"
-                >Mượn</button>
-              <?php else: ?>
-                <button disabled style="opacity: 0.5;">Không khả dụng</button>
-              <?php endif; ?>
-            </td>
-          </tr>
-        <?php endforeach; ?>
-      </table>
+              <div class="book-title"><?= htmlspecialchars($book['title']) ?></div>
+            </a>
+          <?php endforeach; ?>
+        </div>
     <?php else: ?>
       <p>Không có sách nào trong hệ thống.</p>
     <?php endif; ?>
+
 
     <!-- FORM MƯỢN -->
     <div id="borrowForm" style="display:none; position:fixed; top:10%; left:30%; width:40%; background:#fff; padding:20px; border:1px solid #ccc; box-shadow: 0 0 10px rgba(0,0,0,0.3); z-index:9999;">
