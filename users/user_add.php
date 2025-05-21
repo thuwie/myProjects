@@ -36,6 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmt->execute()) {
             $success = "Thêm người dùng thành công!";
             $masv = $username = $email = $password = '';
+            header("Location: ./user_list.php");
+            exit;
         } else {
             $error = "Lỗi thêm người dùng.";
         }
