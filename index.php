@@ -59,13 +59,12 @@
     <div id="sidebar" class="sidebar">
       <button class="close-btn" onclick="toggleSidebar()">×</button>
       <ul class="sidebar-menu">
-        <li><a href="#"><i class="fas fa-home"></i> Trang chủ</a></li>
         <li class="history-toggle" style="cursor: pointer;">
           <i class="fas fa-history"></i> Xem lịch sử mượn sách
         </li>
         <ul class="history-submenu" style="display: none; padding-left: 20px;">
-          <li><a href="#"><i class="fas fa-check"></i> Đã trả</a></li>
-          <li><a href="#"><i class="fas fa-book"></i> Đang mượn</a></li>
+          <li><a href="users/user_returned.php"><i class="fas fa-check"></i> Đã trả</a></li>
+          <li><a href="users/user_loans.php"><i class="fas fa-book"></i> Đang mượn</a></li>
         </ul>
         <li class="logout-btn" style="margin-top: 30px; border-top: 1px solid #ccc; padding-top: 15px;">
           <a href="logout.php"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
@@ -167,15 +166,38 @@
         const author = button.dataset.author;
         const category = button.dataset.category;
         const summary = button.dataset.summary;
-        const status = button.dataset.status === 'available' ? 'Sẵn sàng' : 'Đã mượn';
+        const statusRaw = button.dataset.status;
+        
+        // Xử lý trạng thái hiển thị
+        var statusText = '';
+        var statusColor = '';
 
+        switch (statusRaw) {
+          case 'available':
+            statusText = 'Sẵn sàng';
+            statusColor = 'green';
+            break;
+          case 'pending':
+            statusText = 'Đang chờ duyệt';
+            statusColor = 'orange';
+            break;
+          case 'borrowed':
+            statusText = 'Đã mượn';
+            statusColor = 'red';
+            break;
+          default:
+            statusText = 'Không xác định';
+            statusColor = 'gray';
+        }
         // Gán vào form
         document.getElementById('book_id').value = bookId;
         document.getElementById('book_title').innerText = title;
         document.getElementById('book_author').innerText = author;
         document.getElementById('book_category').innerText = category;
         document.getElementById('book_summary').innerText = summary;
-        document.getElementById('book_status').innerText = status;
+        const statusEl = document.getElementById('book_status');
+        statusEl.innerText = statusText;
+        statusEl.style.color = statusColor;
 
         // Hiện form
         document.getElementById('borrowForm').style.display = 'block';

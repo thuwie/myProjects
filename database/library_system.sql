@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 19, 2025 at 07:19 PM
+-- Generation Time: May 23, 2025 at 03:10 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -35,7 +35,7 @@ CREATE TABLE `books` (
   `category` varchar(100) DEFAULT NULL,
   `publish_year` int(11) DEFAULT NULL,
   `summary` text DEFAULT NULL,
-  `status` enum('available','borrowed') DEFAULT 'available'
+  `status` enum('available','pending','borrowed') NOT NULL DEFAULT 'available'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -43,8 +43,8 @@ CREATE TABLE `books` (
 --
 
 INSERT INTO `books` (`id`, `images`, `title`, `author`, `category`, `publish_year`, `summary`, `status`) VALUES
-('GT_01', 'uploads/1747308867_the-lord-of-the-rings.png', 'The Lord of the Rings', 'J.R.R. Tolkien', 'GT', 1955, 'Frodo Baggins nhận nhiệm vụ tiêu hủy chiếc nhẫn quyền lực để cứu thế giới khỏi bóng tối.', 'borrowed'),
-('GT_02', 'uploads/1747308897_the-hobbit.png', 'The Hobbit', 'J.R.R. Tolkien', 'GT', 1937, 'Bilbo Baggins, một hobbit bình thường, tham gia vào cuộc phiêu lưu tìm kho báu cùng nhóm người lùn.', 'borrowed'),
+('GT_01', 'uploads/1747308867_the-lord-of-the-rings.png', 'The Lord of the Rings', 'J.R.R. Tolkien', 'GT', 1955, 'Frodo Baggins nhận nhiệm vụ tiêu hủy chiếc nhẫn quyền lực để cứu thế giới khỏi bóng tối.', 'available'),
+('GT_02', 'uploads/1747308897_the-hobbit.png', 'The Hobbit', 'J.R.R. Tolkien', 'GT', 1937, 'Bilbo Baggins, một hobbit bình thường, tham gia vào cuộc phiêu lưu tìm kho báu cùng nhóm người lùn.', 'pending'),
 ('KN_01', 'uploads/1747306239_bai-hoc-dieu-ky-tu-chiec-xe-rac.png', 'Bài Học Diệu Kỳ Từ Chiếc Xe Rác', 'David J. Pollay', 'KN', 2010, 'Khuyến khích con người bỏ qua những điều tiêu cực, học cách sống lạc quan và tích cực hơn.', 'available'),
 ('KN_02', 'uploads/1747306557_quang-ganh-lo-di-va-vui-song.png', 'Quẳng Gánh Lo Đi Và Vui Sống (How to Stop Worrying and Start Living)', 'Dale Carnegie', 'KN', 1948, 'Cung cấp phương pháp và lời khuyên giúp con người giảm lo âu, sống vui vẻ và hiệu quả hơn.', 'available'),
 ('KN_03', 'uploads/1747306776_tuoi-tre-dang-gia-bao-nhieu.png', 'Tuổi Trẻ Đáng Giá Bao Nhiêu?', 'Rosie Nguyễn', 'KN', 2016, 'Hướng dẫn người trẻ cách tận dụng thời gian, học hỏi, làm việc và sống trọn vẹn trong tuổi thanh xuân.', 'available'),
@@ -111,7 +111,7 @@ CREATE TABLE `loans` (
   `student_id` varchar(20) DEFAULT NULL,
   `borrow_date` date DEFAULT NULL,
   `return_date` date DEFAULT NULL,
-  `status` enum('pending','approved','returned') DEFAULT 'pending',
+  `status` enum('pending','approved','returned') NOT NULL DEFAULT 'pending',
   `approved_at` datetime DEFAULT NULL,
   `approved_by` varchar(50) DEFAULT NULL,
   `returned_at` date DEFAULT NULL
@@ -122,9 +122,7 @@ CREATE TABLE `loans` (
 --
 
 INSERT INTO `loans` (`id`, `book_id`, `student_id`, `borrow_date`, `return_date`, `status`, `approved_at`, `approved_by`, `returned_at`) VALUES
-(10, 'GT_01', '4651050264', '2025-05-19', '2025-05-21', 'approved', '2025-05-20 00:01:19', 'Nguyễn Thị Nở', NULL),
-(11, 'GT_02', '4651050264', '2025-05-19', '2025-05-28', 'approved', '2025-05-20 00:03:41', 'Nguyễn Thị Nở', NULL),
-(12, 'KN_01', '4651050264', '2025-05-19', '2025-05-31', 'returned', '2025-05-20 00:18:48', 'Nguyễn Thị Nở', NULL);
+(4, 'GT_02', '4151050139', '2025-05-23', '2025-05-24', 'pending', '0000-00-00 00:00:00', '', NULL);
 
 -- --------------------------------------------------------
 
@@ -184,7 +182,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `loans`
 --
 ALTER TABLE `loans`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables

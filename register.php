@@ -1,45 +1,25 @@
 <!-- register.php -->
 <?php
 session_start();
-require_once 'verify/sendmail.php'; // Đảm bảo bạn đã cấu hình PHPMailer đúng
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Nhận dữ liệu từ form
-    $masv = $_POST['masv'] ?? '';
-    $username = $_POST['username'] ?? '';
-    $email = $_POST['email'] ?? '';
-    $password = $_POST['password'] ?? '';
+  // Nhận dữ liệu từ form
+  $masv = $_POST['masv'] ?? '';
+  $username = $_POST['username'] ?? '';
+  $email = $_POST['email'] ?? '';
+  $password = $_POST['password'] ?? '';
     
-    // Kiểm tra trùng tên đăng nhập hoặc email
-    require_once './database/db.php';
-    $sql_check = "SELECT * FROM users WHERE username = ? OR email = ?";
-    $stmt_check = $pdo->prepare($sql_check);
-    $stmt_check->execute([$username, $email]);
-    $user_check = $stmt_check->fetch(PDO::FETCH_ASSOC);
+  // Kiểm tra trùng tên đăng nhập hoặc email
+  require_once './database/db.php';
+  $sql_check = "SELECT * FROM users WHERE username = ? OR email = ?";
+  $stmt_check = $pdo->prepare($sql_check);
+  $stmt_check->execute([$username, $email]);
+  $user_check = $stmt_check->fetch(PDO::FETCH_ASSOC);
 
-    if($user_check){
-        echo "Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.";
-        exit;
-    }
-
-    // Tạo mã OTP
-    $otp = rand(100000, 999999);
-    $_SESSION['pending_user'] = [
-        'masv' => $masv,
-        'username' => $username,
-        'email' => $email,
-        'password' => $password,
-        'otp' => $otp
-    ];
-
-    // Gửi mã OTP qua email
-    $subject = "Mã xác thực đăng ký tài khoản";
-    $message = "Mã OTP của bạn là: $otp";
-    sendmail($email, $subject, $message);
-
-    // Chuyển hướng đến trang xác thực
-    header("Location: verify.php");
+  if($user_check){
+    echo "Tên đăng nhập đã tồn tại. Vui lòng chọn tên khác.";
     exit;
+  }
 }
 ?>
 

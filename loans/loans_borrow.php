@@ -39,25 +39,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
       // Phân biệt form mượn từ xa hay mượn trực tiếp
       $status = isset($_POST['borrow_submit']) ? 'approved' : 'pending';
-
       $stmt = $pdo->prepare("INSERT INTO loans (book_id, student_id, borrow_date, return_date, status, approved_at, approved_by) VALUES (?, ?, ?, ?, ?, ?, ?)");
       $stmt->execute([$book_id, $student_id, $borrow_date, $return_date, $status, $approved_at, $approved_by]);
 
-      $pdo->commit();
-
       // Nếu từ form mượn tại thư viện
       if ($status === 'approved') {
-        // Nếu là mượn trực tiếp
+        // Cập nhật trạng thái sách
+        $stmt = $pdo->prepare("UPDATE books SET status = 'borrowed' WHERE id = ?");
+        $stmt->execute([$book_id]);
+        $pdo->commit(); // commit sau cả insert và update
+
+        //Load lại danh sách sách 'available' sau khi mượn
+        $stmt = $pdo->query("SELECT id, title FROM books WHERE status = 'available' ORDER BY id");
+        $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
         $success_message = "Tạo phiếu mượn thành công (đã duyệt ngay).";
+        
+      // Nếu từ form mượn từ xa
       } else {
-        // Nếu từ form mượn từ xa
+        $stmt = $pdo->prepare("UPDATE books SET status = 'pending' WHERE id = ?");
+        $stmt->execute([$book_id]);
+        $pdo->commit(); // chỉ cần commit insert
+        
         echo "<script>
-          alert('✅ Đã xác nhận mượn sách, chờ admin duyệt!');
+          alert('✅ Đã xác nhận mượn sách, hãy đến thư viện để lấy sách!');
           window.location.href = '../index.php';
         </script>";
         exit;
       }
-    } catch (PDOException $e) {
+    } catch (Exception $e) {
       $pdo->rollBack();
       $error_message = "Lỗi khi mượn sách: " . $e->getMessage();
     }
@@ -83,6 +93,21 @@ try {
 ?>
 
 <main>
+  <style>
+    table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  table, th, td {
+    border: 1px solid #333;
+  }
+
+  th, td {
+    padding: 8px;
+    text-align: left;
+  }
+  </style>
   <h2>Mượn sách</h2>
   <?php if ($error_message): ?>
     <p style="color: red;"><?= $error_message ?></p>
@@ -131,9 +156,11 @@ try {
         </tr>
       </thead>
       <tbody>
+        <?php $stt = 1; ?>
         <?php foreach ($loans as $loan): ?>
         <tr>
-          <td><?= htmlspecialchars($loan['id']) ?></td>
+          <td><?= $stt ?></td>
+
           <td><?= htmlspecialchars($loan['title']) ?></td>
           <td><?= htmlspecialchars($loan['reader_name']) ?></td>
           <td><?= htmlspecialchars($loan['borrow_date']) ?></td>
@@ -148,7 +175,7 @@ try {
             <?php endif; ?>
           </td>
         </tr>
-        <?php endforeach; ?>
+        <?php $stt++; endforeach; ?>
       </tbody>
     </table>
   <?php else: ?>

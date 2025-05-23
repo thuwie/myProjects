@@ -6,8 +6,7 @@ $masv = $_POST['masv'] ?? '';
 $username = $_POST['username'] ?? '';
 $email = $_POST['email'] ?? '';
 $password = $_POST['password'] ?? '';
-$role = $_POST['role'] ?? 'user';
-$from_admin = isset($_POST['from_admin']) ? true : false;
+$role = 'user';
 
 $error = '';
 $success = '';
@@ -77,11 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label>Mật khẩu:</label>
             <input type="password" name="password" required>
 
-            <label>Vai trò:</label>
-            <select name="role">
-                <option value="user" <?= $role === 'user' ? 'selected' : '' ?>>User</option>
-                <option value="admin" <?= $role === 'admin' ? 'selected' : '' ?>>Admin</option>
-            </select>
+            <label>Vai trò: User</label>
 
             <input type="hidden" name="from_admin" value="1">
 

@@ -52,9 +52,6 @@ $users = $stmt->fetchAll();
                         <td><?= htmlspecialchars($row['username']) ?></td>
                         <td><?= htmlspecialchars($row['email']) ?></td>
                         <td class="action-icons">
-                            <a href="user_edit.php?masv=<?= urlencode($row['masv']) ?>" class="edit-icon" title="Sửa">
-                                <i class="fa fa-pen"></i>
-                            </a>
                             <a href="user_delete.php?masv=<?= urlencode($row['masv']) ?>" class="delete-icon" title="Xóa" onclick="return confirm('Bạn có chắc muốn xóa người dùng này không?');">
                                 <i class="fa fa-trash"></i>
                             </a>
