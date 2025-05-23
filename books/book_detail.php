@@ -1,13 +1,17 @@
 <?php 
     require_once '../database/db.php';
     session_start();
+    if (isset($_SESSION['success_message'])) {
+    echo "<script>alert('".$_SESSION['success_message']."');</script>";
+    unset($_SESSION['success_message']);
+}
+
     if (isset($_GET['id'])) {
         $book_id = $_GET['id']; 
          try {
-            
-                $stmt = $pdo->prepare("SELECT * FROM books WHERE id = ?");
-                $stmt->execute([$book_id]);
-                $book = $stmt->fetch(PDO::FETCH_ASSOC);
+          $stmt = $pdo->prepare("SELECT * FROM books WHERE id = ?");
+          $stmt->execute([$book_id]);
+          $book = $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (\Throwable $th) {
     }
     };
@@ -34,9 +38,22 @@
                 <p><strong>Thể loại:</strong> <?= htmlspecialchars($book['category']) ?></p>
                 <p><strong>Năm xuất bản:</strong> <?= htmlspecialchars($book['publish_year']) ?></p>
                 <p><strong>Tóm tắt:</strong> <?= nl2br(htmlspecialchars($book['summary'])) ?></p>
-                <p><strong>Trạng thái:</strong><span style ="color: green">
-                     <?= ($book['status'] === 'available') ? 'Sẵn sàng' : 'Đã mượn' ?>
-                </span></p>
+                <?php
+                $status = $book['status'];
+                if ($status === 'available') {
+                    $color = 'green';
+                    $text = 'Sẵn sàng';
+                } else if ($status === 'borrowed') {
+                    $color = 'red';
+                    $text = 'Đã mượn';
+                } else {
+                    $color = 'orange';
+                    $text = 'Đang chờ duyệt';
+                }
+                ?>
+                <p><strong>Trạng thái:</strong> 
+                  <span style="color: <?= $color ?>"><?= $text ?></span>
+                </p>
 
                 <div class="btn-borrow-book">
                     <?php if ($book['status'] === 'available'): ?>
@@ -57,7 +74,7 @@
         </div>
     </div>
     
-      <!-- FORM MƯỢN -->
+    <!-- FORM MƯỢN -->
     <div id="borrowForm" style="display:none; position:fixed; top:10%; left:30%; width:40%; background:#fff; padding:20px; border:1px solid #ccc; box-shadow: 0 0 10px rgba(0,0,0,0.3); z-index:9999;">
       <h3>Phiếu mượn sách</h3>
       <form method="POST" action="../loans/loans_borrow.php">

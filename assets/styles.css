@@ -435,3 +435,8 @@ footer {
   color: white;
   cursor: pointer;
 }
+
+.book-image-wrapper img {
+  width: 400px;
+  height: 515px;
+}
