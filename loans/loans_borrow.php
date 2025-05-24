@@ -27,6 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $approved_at = $_POST['approved_at'] ?? '';
   $approved_by = $_POST['approved_by'] ?? '';
 
+    // Nếu approved_at rỗng, gán NULL để tránh lỗi SQL
+  $approved_at = empty($approved_at) ? null : $approved_at;
+
   $errors = [];
   if (empty($book_id)) $errors[] = "Chưa chọn sách.";
   if (empty($student_id)) $errors[] = "Chưa chọn độc giả.";

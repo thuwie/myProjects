@@ -1,5 +1,5 @@
 <?php
-$base_url = '/LIBRARY/'; 
+$base_url = '/'; 
 ?>
 <!DOCTYPE html>
 <html lang="vi">
